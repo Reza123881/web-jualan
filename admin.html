@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>AnimateShop - Belanja Online</title>
     <style>
         * {
@@ -69,7 +69,7 @@
         /* Navbar */
         .navbar {
             background: var(--white-pure);
-            padding: 1rem 5%;
+            padding: 0.8rem 4%;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -86,22 +86,23 @@
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: bold;
             color: var(--brown-dark);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.3rem;
         }
 
         .logo i {
             color: var(--brown-medium);
+            font-size: 1.3rem;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 1rem;
             align-items: center;
         }
 
@@ -112,11 +113,16 @@
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.2rem;
+            font-size: 0.9rem;
         }
 
-        .nav-links a:hover {
-            color: var(--brown-dark);
+        .nav-links a span {
+            display: none;
+        }
+
+        .nav-links a i {
+            font-size: 1.2rem;
         }
 
         .cart-icon {
@@ -130,19 +136,19 @@
             right: -8px;
             background: var(--brown-dark);
             color: var(--white-pure);
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             font-weight: bold;
-            padding: 0.2rem 0.5rem;
+            padding: 0.2rem 0.4rem;
             border-radius: 10px;
-            min-width: 18px;
+            min-width: 16px;
             text-align: center;
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
-            padding: 0.5rem 1rem;
+            gap: 0.3rem;
+            padding: 0.4rem 0.8rem;
             background: var(--white-cream);
             border: 1px solid var(--brown-soft);
             border-radius: 30px;
@@ -150,37 +156,30 @@
             transition: all 0.3s;
         }
 
-        .user-info:hover {
-            background: var(--brown-soft);
-            color: var(--white-pure);
-        }
-
-        .user-info:hover i,
-        .user-info:hover span {
-            color: var(--white-pure);
-        }
-
         .user-info i {
             color: var(--brown-medium);
+            font-size: 1rem;
         }
 
         .user-info span {
             color: var(--text-brown);
+            font-size: 0.8rem;
+            display: none;
         }
 
         /* Main Container */
         .container {
             max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 20px;
+            margin: 1rem auto;
+            padding: 0 12px;
         }
 
         /* Hero Section */
         .hero-section {
             background: linear-gradient(135deg, var(--white-pure), var(--white-cream));
             border-radius: 20px;
-            padding: 3rem;
-            margin-bottom: 3rem;
+            padding: 2rem 1.5rem;
+            margin-bottom: 2rem;
             border: 2px solid var(--brown-soft);
             position: relative;
             overflow: hidden;
@@ -210,19 +209,20 @@
 
         .hero-content h1 {
             color: var(--brown-dark);
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
         }
 
         .hero-content p {
             color: var(--brown-medium);
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .search-bar {
             display: flex;
-            max-width: 500px;
+            max-width: 100%;
             background: var(--white-pure);
             border-radius: 50px;
             border: 2px solid var(--brown-soft);
@@ -231,11 +231,12 @@
 
         .search-bar input {
             flex: 1;
-            padding: 1rem 1.5rem;
+            padding: 0.8rem 1rem;
             background: transparent;
             border: none;
             color: var(--text-dark);
-            font-size: 1rem;
+            font-size: 0.95rem;
+            width: 100%;
         }
 
         .search-bar input:focus {
@@ -244,10 +245,11 @@
 
         .search-bar input::placeholder {
             color: var(--brown-light);
+            font-size: 0.9rem;
         }
 
         .search-bar button {
-            padding: 0 2rem;
+            padding: 0 1.2rem;
             background: var(--brown-medium);
             border: none;
             color: var(--white-pure);
@@ -259,56 +261,61 @@
             background: var(--brown-dark);
         }
 
+        .search-bar button i {
+            font-size: 1rem;
+        }
+
         /* Category Section */
         .category-section {
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .section-title {
             color: var(--brown-dark);
-            font-size: 2rem;
-            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         .section-title i {
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: var(--brown-medium);
         }
 
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.8rem;
         }
 
         .category-card {
             background: var(--white-pure);
             border: 2px solid var(--brown-soft);
-            border-radius: 10px;
-            padding: 1.5rem;
+            border-radius: 12px;
+            padding: 1rem 0.5rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .category-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             border-color: var(--brown-dark);
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.15);
         }
 
         .category-card i {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             color: var(--brown-medium);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .category-card h3 {
             color: var(--text-brown);
-            font-size: 1.1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
         .category-card.active {
@@ -324,9 +331,9 @@
         /* Products Grid */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         .product-card {
@@ -339,27 +346,27 @@
         }
 
         .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.15);
             border-color: var(--brown-dark);
         }
 
         .product-badge {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
+            top: 0.5rem;
+            right: 0.5rem;
             background: var(--brown-dark);
             color: var(--white-pure);
-            padding: 0.3rem 1rem;
+            padding: 0.2rem 0.6rem;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: bold;
             z-index: 1;
         }
 
         .product-image {
             width: 100%;
-            height: 200px;
+            height: 150px;
             background: var(--white-cream);
             display: flex;
             align-items: center;
@@ -382,19 +389,19 @@
         }
 
         .product-image i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--brown-light);
         }
 
         .image-gallery-indicator {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
+            bottom: 5px;
+            right: 5px;
             background: rgba(255,255,255,0.9);
             color: var(--brown-dark);
-            padding: 0.2rem 0.5rem;
+            padding: 0.2rem 0.4rem;
             border-radius: 5px;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             display: flex;
             align-items: center;
             gap: 0.2rem;
@@ -402,36 +409,41 @@
         }
 
         .product-info {
-            padding: 1.5rem;
+            padding: 1rem;
             background: var(--white-pure);
         }
 
         .product-category {
             color: var(--brown-light);
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
         }
 
         .product-name {
             color: var(--text-brown);
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .product-price {
             color: var(--brown-dark);
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .product-stock {
             color: var(--success);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
             display: flex;
             align-items: center;
             gap: 0.3rem;
@@ -446,20 +458,17 @@
         }
 
         .product-description {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
+            display: none;
         }
 
         .product-actions {
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
         }
 
         .btn {
             flex: 1;
-            padding: 0.8rem;
+            padding: 0.6rem 0.3rem;
             border: none;
             border-radius: 8px;
             font-weight: 600;
@@ -468,8 +477,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
+            gap: 0.3rem;
+            font-size: 0.8rem;
         }
 
         .btn-primary {
@@ -481,8 +490,6 @@
         .btn-primary:hover {
             background: var(--brown-medium);
             color: var(--white-pure);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
         }
 
         .btn-success {
@@ -494,8 +501,6 @@
         .btn-success:hover {
             background: var(--brown-medium);
             border-color: var(--brown-medium);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
         }
 
         .btn-outline {
@@ -514,15 +519,15 @@
             cursor: not-allowed;
         }
 
-        /* Cart Sidebar */
+        /* Cart Sidebar - Mobile Optimized */
         .cart-sidebar {
             position: fixed;
             top: 0;
-            right: -400px;
-            width: 400px;
+            right: -100%;
+            width: 100%;
             height: 100vh;
             background: var(--white-pure);
-            border-left: 3px solid var(--brown-dark);
+            border-left: none;
             z-index: 2000;
             transition: right 0.3s ease;
             display: flex;
@@ -535,7 +540,7 @@
         }
 
         .cart-header {
-            padding: 1.5rem;
+            padding: 1rem 1.2rem;
             background: var(--brown-medium);
             border-bottom: 3px solid var(--brown-dark);
             display: flex;
@@ -548,6 +553,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 1.2rem;
         }
 
         .close-cart {
@@ -567,16 +573,16 @@
         .cart-items {
             flex: 1;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         .cart-item {
             display: flex;
-            gap: 1rem;
-            padding: 1rem;
+            gap: 0.8rem;
+            padding: 0.8rem;
             background: var(--white-cream);
-            border-radius: 8px;
-            margin-bottom: 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.8rem;
             border: 1px solid var(--brown-soft);
         }
 
@@ -587,6 +593,7 @@
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid var(--brown-soft);
+            flex-shrink: 0;
         }
 
         .cart-item-image img {
@@ -597,17 +604,22 @@
 
         .cart-item-details {
             flex: 1;
+            min-width: 0;
         }
 
         .cart-item-name {
             color: var(--text-brown);
             font-weight: 600;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.2rem;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .cart-item-price {
             color: var(--brown-dark);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
         }
 
@@ -619,14 +631,18 @@
         }
 
         .quantity-btn {
-            width: 25px;
-            height: 25px;
-            border-radius: 5px;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
             border: 1px solid var(--brown-soft);
             background: var(--white-pure);
             color: var(--brown-medium);
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .quantity-btn:hover {
@@ -637,10 +653,13 @@
         .cart-item-total {
             color: var(--brown-dark);
             font-weight: bold;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            margin-left: 0.5rem;
         }
 
         .cart-footer {
-            padding: 1.5rem;
+            padding: 1rem 1.2rem;
             background: var(--white-cream);
             border-top: 2px solid var(--brown-soft);
         }
@@ -649,7 +668,7 @@
             display: flex;
             justify-content: space-between;
             color: var(--text-brown);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             margin-bottom: 1rem;
         }
@@ -664,7 +683,7 @@
             background: var(--brown-dark);
             color: var(--white-pure);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -672,15 +691,14 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            font-size: 1rem;
         }
 
         .checkout-btn:hover {
             background: var(--brown-medium);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
         }
 
-        /* Product Detail Modal */
+        /* Product Detail Modal - Mobile Optimized */
         .modal {
             display: none;
             position: fixed;
@@ -692,31 +710,37 @@
             backdrop-filter: blur(5px);
             z-index: 3000;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
         }
 
         .modal.show {
             display: flex;
-            animation: fadeIn 0.3s ease;
+            animation: slideUp 0.3s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .modal-content {
             background: var(--white-pure);
-            border-radius: 15px;
-            width: 90%;
-            max-width: 900px;
+            border-radius: 20px 20px 0 0;
+            width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            border: 3px solid var(--brown-dark);
+            border: none;
+            border-top: 3px solid var(--brown-dark);
         }
 
         .modal-header {
-            padding: 1.5rem;
+            padding: 1.2rem;
             border-bottom: 2px solid var(--brown-soft);
             display: flex;
             justify-content: space-between;
@@ -732,6 +756,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 1.2rem;
         }
 
         .close-modal {
@@ -749,20 +774,20 @@
         }
 
         .modal-body {
-            padding: 1.5rem;
+            padding: 1.2rem;
         }
 
         .product-detail {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
         .product-detail-image {
             background: var(--white-cream);
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
-            height: 400px;
+            height: 300px;
             border: 2px solid var(--brown-soft);
         }
 
@@ -772,82 +797,6 @@
             object-fit: cover;
         }
 
-        .product-detail-info h2 {
-            color: var(--brown-dark);
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .product-detail-price {
-            color: var(--brown-dark);
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .product-detail-stock {
-            color: var(--success);
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .product-detail-description {
-            color: #666;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-        }
-
-        .product-detail-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--white-cream);
-            border: 2px solid var(--brown-soft);
-            border-radius: 8px;
-            padding: 0.3rem;
-        }
-
-        .quantity-btn-large {
-            width: 40px;
-            height: 40px;
-            border: none;
-            background: var(--brown-soft);
-            color: var(--brown-dark);
-            font-size: 1.2rem;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-
-        .quantity-btn-large:hover {
-            background: var(--brown-medium);
-            color: var(--white-pure);
-        }
-
-        .quantity-input {
-            width: 60px;
-            text-align: center;
-            background: transparent;
-            border: none;
-            color: var(--text-brown);
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .quantity-input:focus {
-            outline: none;
-        }
-
-        /* Image Gallery */
         .image-gallery {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -857,8 +806,8 @@
 
         .gallery-thumb {
             width: 100%;
-            height: 80px;
-            border-radius: 5px;
+            height: 70px;
+            border-radius: 8px;
             overflow: hidden;
             cursor: pointer;
             border: 2px solid transparent;
@@ -876,7 +825,85 @@
             object-fit: cover;
         }
 
-        /* Payment Modal */
+        .product-detail-info h2 {
+            color: var(--brown-dark);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-detail-price {
+            color: var(--brown-dark);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+        }
+
+        .product-detail-stock {
+            color: var(--success);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-detail-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--white-cream);
+            border: 2px solid var(--brown-soft);
+            border-radius: 10px;
+            padding: 0.3rem;
+            width: fit-content;
+            margin-bottom: 1.5rem;
+        }
+
+        .quantity-btn-large {
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: var(--brown-soft);
+            color: var(--brown-dark);
+            font-size: 1.3rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .quantity-btn-large:hover {
+            background: var(--brown-medium);
+            color: var(--white-pure);
+        }
+
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: var(--text-brown);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .quantity-input:focus {
+            outline: none;
+        }
+
+        .product-detail-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Payment Modal - Mobile Optimized */
         .payment-modal {
             display: none;
             position: fixed;
@@ -887,20 +914,23 @@
             background: rgba(0,0,0,0.5);
             z-index: 4000;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
         }
 
         .payment-modal.show {
             display: flex;
+            animation: slideUp 0.3s ease;
         }
 
         .payment-content {
             background: var(--white-pure);
-            border-radius: 15px;
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-            border: 3px solid var(--brown-dark);
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: none;
+            border-top: 3px solid var(--brown-dark);
             text-align: center;
         }
 
@@ -911,12 +941,13 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            font-size: 1.3rem;
         }
 
         .qr-code {
-            width: 250px;
-            height: 250px;
-            margin: 2rem auto;
+            width: 200px;
+            height: 200px;
+            margin: 1rem auto;
             background: var(--white-cream);
             border: 2px solid var(--brown-soft);
             border-radius: 15px;
@@ -928,14 +959,8 @@
             overflow: hidden;
         }
 
-        .qr-code img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         .qr-code i {
-            font-size: 8rem;
+            font-size: 6rem;
             color: var(--brown-dark);
         }
 
@@ -946,14 +971,14 @@
             right: 0;
             background: var(--brown-dark);
             color: var(--white-pure);
-            padding: 0.5rem;
-            font-size: 0.8rem;
+            padding: 0.4rem;
+            font-size: 0.7rem;
         }
 
         .payment-info {
             background: var(--white-cream);
             border: 1px solid var(--brown-soft);
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 1rem;
             margin: 1rem 0;
             text-align: left;
@@ -964,6 +989,7 @@
             color: var(--text-brown);
             display: flex;
             justify-content: space-between;
+            font-size: 0.95rem;
         }
 
         .payment-info strong {
@@ -971,10 +997,10 @@
         }
 
         .countdown-timer {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: var(--brown-dark);
-            margin: 1rem 0;
+            margin: 0.5rem 0;
         }
 
         .payment-instructions {
@@ -983,24 +1009,26 @@
             padding: 1rem;
             background: var(--white-pure);
             border: 1px solid var(--brown-soft);
-            border-radius: 8px;
+            border-radius: 10px;
         }
 
         .payment-instructions h4 {
             color: var(--brown-dark);
             margin-bottom: 0.5rem;
+            font-size: 1rem;
         }
 
         .payment-instructions ol {
-            padding-left: 1.5rem;
+            padding-left: 1.2rem;
             color: #666;
+            font-size: 0.9rem;
         }
 
         .payment-instructions li {
-            margin: 0.5rem 0;
+            margin: 0.4rem 0;
         }
 
-        /* Checkout Modal */
+        /* Checkout Modal - Mobile Optimized */
         .checkout-modal {
             display: none;
             position: fixed;
@@ -1011,20 +1039,24 @@
             background: rgba(0,0,0,0.5);
             z-index: 3500;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
         }
 
         .checkout-modal.show {
             display: flex;
+            animation: slideUp 0.3s ease;
         }
 
         .checkout-content {
             background: var(--white-pure);
-            border-radius: 15px;
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-            border: 3px solid var(--brown-dark);
+            border-radius: 20px 20px 0 0;
+            padding: 1.5rem;
+            max-width: 100%;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: none;
+            border-top: 3px solid var(--brown-dark);
         }
 
         .checkout-content h2 {
@@ -1033,29 +1065,31 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 1.3rem;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
             color: var(--brown-medium);
             font-weight: 600;
+            font-size: 0.95rem;
         }
 
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 1rem;
+            padding: 0.9rem;
             background: var(--white-cream);
             border: 2px solid var(--brown-soft);
-            border-radius: 8px;
+            border-radius: 10px;
             color: var(--text-dark);
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
         .form-group input:focus,
@@ -1065,32 +1099,69 @@
             border-color: var(--brown-dark);
         }
 
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: var(--brown-light);
+        /* Bottom Navigation for Mobile */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white-pure);
+            border-top: 2px solid var(--brown-soft);
+            padding: 0.5rem 1rem;
+            z-index: 999;
+        }
+
+        .bottom-nav .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--brown-medium);
+            font-size: 0.7rem;
+            gap: 0.2rem;
+        }
+
+        .bottom-nav .nav-item i {
+            font-size: 1.3rem;
+        }
+
+        .bottom-nav .nav-item.active {
+            color: var(--brown-dark);
+        }
+
+        .bottom-nav .cart-nav-item {
+            position: relative;
         }
 
         /* Notification */
         .notification {
             position: fixed;
             top: 20px;
+            left: 20px;
             right: 20px;
-            padding: 1rem 1.5rem;
+            padding: 1rem;
             background: var(--white-pure);
             border-radius: 10px;
             border-left: 4px solid var(--success);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transform: translateX(400px);
+            transform: translateY(-100px);
             transition: transform 0.3s;
             z-index: 5000;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
             border: 1px solid var(--brown-soft);
         }
 
         .notification.show {
-            transform: translateX(0);
+            transform: translateY(0);
         }
 
         .notification.error {
@@ -1098,7 +1169,7 @@
         }
 
         .notification i {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
         }
 
         .notification.success i {
@@ -1111,6 +1182,8 @@
 
         .notification-message {
             color: var(--text-brown);
+            font-size: 0.95rem;
+            flex: 1;
         }
 
         /* Loading Spinner */
@@ -1128,28 +1201,117 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Responsive */
+        /* Tablet and Desktop Styles */
+        @media (min-width: 769px) {
+            .navbar {
+                padding: 1rem 5%;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .nav-links {
+                gap: 2rem;
+            }
+
+            .nav-links a span {
+                display: inline;
+            }
+
+            .nav-links a i {
+                font-size: 1rem;
+            }
+
+            .user-info span {
+                display: inline;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 2rem;
+            }
+
+            .product-image {
+                height: 200px;
+            }
+
+            .product-description {
+                display: block;
+                color: #666;
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+                line-height: 1.5;
+            }
+
+            .modal {
+                align-items: center;
+            }
+
+            .modal-content {
+                width: 90%;
+                max-width: 900px;
+                border-radius: 15px;
+                border: 3px solid var(--brown-dark);
+            }
+
+            .payment-modal {
+                align-items: center;
+            }
+
+            .payment-content {
+                border-radius: 15px;
+                max-width: 500px;
+                width: 90%;
+                border: 3px solid var(--brown-dark);
+            }
+
+            .checkout-modal {
+                align-items: center;
+            }
+
+            .checkout-content {
+                border-radius: 15px;
+                max-width: 500px;
+                width: 90%;
+                border: 3px solid var(--brown-dark);
+            }
+
+            .notification {
+                left: auto;
+                right: 20px;
+                max-width: 400px;
+            }
+        }
+
+        /* Show bottom nav only on mobile */
         @media (max-width: 768px) {
-            .hero-content h1 {
-                font-size: 2rem;
+            .bottom-nav {
+                display: block;
             }
-
-            .product-detail {
-                grid-template-columns: 1fr;
+            
+            .container {
+                padding-bottom: 70px;
             }
-
+            
+            .nav-links a:not(.cart-icon):not(.user-info) {
+                display: none;
+            }
+            
+            .nav-links {
+                gap: 0.5rem;
+            }
+            
+            .user-info {
+                padding: 0.4rem;
+            }
+            
+            .user-info span {
+                display: none;
+            }
+            
             .cart-sidebar {
                 width: 100%;
-                right: -100%;
-            }
-
-            .product-actions {
-                flex-direction: column;
-            }
-
-            .qr-code {
-                width: 200px;
-                height: 200px;
             }
         }
     </style>
@@ -1164,11 +1326,17 @@
         <div class="nav-container">
             <a href="#" class="logo">
                 <i class="fas fa-store"></i>
-                AnimateShop
+                <span>AnimateShop</span>
             </a>
             <div class="nav-links">
-                <a href="#" onclick="filterByCategory('all')"><i class="fas fa-home"></i> Beranda</a>
-                <a href="#" onclick="showCart()"><i class="fas fa-shopping-cart"></i> Keranjang</a>
+                <a href="#" onclick="filterByCategory('all')">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
+                </a>
+                <a href="#" onclick="showCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Keranjang</span>
+                </a>
                 <div class="cart-icon" onclick="showCart()">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count" id="cartCount">0</span>
@@ -1199,7 +1367,7 @@
         <div class="category-section">
             <h2 class="section-title">
                 <i class="fas fa-tags"></i>
-                Kategori Produk
+                Kategori
             </h2>
             <div class="category-grid" id="categoryGrid">
                 <div class="category-card active" onclick="filterByCategory('all')">
@@ -1232,6 +1400,33 @@
         </h2>
         <div class="products-grid" id="productsGrid">
             <!-- Products will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Bottom Navigation for Mobile -->
+    <div class="bottom-nav">
+        <div class="nav-items">
+            <a href="#" class="nav-item active" onclick="filterByCategory('all')">
+                <i class="fas fa-home"></i>
+                <span>Beranda</span>
+            </a>
+            <a href="#" class="nav-item" onclick="filterByCategory('elektronik')">
+                <i class="fas fa-laptop"></i>
+                <span>Elektronik</span>
+            </a>
+            <a href="#" class="nav-item cart-nav-item" onclick="showCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Keranjang</span>
+                <span class="cart-count" id="mobileCartCount">0</span>
+            </a>
+            <a href="#" class="nav-item" onclick="filterByCategory('fashion')">
+                <i class="fas fa-tshirt"></i>
+                <span>Fashion</span>
+            </a>
+            <a href="#" class="nav-item" onclick="openLoginModal()">
+                <i class="fas fa-user"></i>
+                <span>Akun</span>
+            </a>
         </div>
     </div>
 
@@ -1288,7 +1483,7 @@
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-map-marker-alt"></i> Alamat</label>
-                    <textarea id="customerAddress" placeholder="Masukkan alamat lengkap" required></textarea>
+                    <textarea id="customerAddress" placeholder="Masukkan alamat lengkap" required rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-credit-card"></i> Metode Pembayaran</label>
@@ -1301,7 +1496,7 @@
                 </div>
                 <div style="display: flex; gap: 1rem;">
                     <button type="button" class="btn btn-outline" onclick="closeCheckoutModal()" style="flex: 1;">Batal</button>
-                    <button type="button" class="btn btn-success" style="flex: 1;" onclick="processCheckout()">Lanjut ke Pembayaran</button>
+                    <button type="button" class="btn btn-success" style="flex: 1;" onclick="processCheckout()">Lanjut</button>
                 </div>
             </form>
         </div>
@@ -1313,36 +1508,29 @@
             <h2><i class="fas fa-qrcode"></i> <span id="paymentMethodTitle">Pembayaran</span></h2>
             
             <div id="qrCodeContainer" class="qr-code">
-                <!-- QR Code will be generated here -->
                 <i class="fas fa-qrcode"></i>
                 <div class="qr-overlay" id="qrOverlay">Scan untuk membayar</div>
             </div>
 
             <div class="payment-info">
-                <p><span>Total Pembayaran:</span> <strong id="paymentTotal">Rp 0</strong></p>
+                <p><span>Total:</span> <strong id="paymentTotal">Rp 0</strong></p>
                 <p><span>Metode:</span> <strong id="paymentMethodDisplay">Transfer Bank</strong></p>
-                <p><span>Status:</span> <strong style="color: var(--warning);">Menunggu Pembayaran</strong></p>
+                <p><span>Status:</span> <strong style="color: var(--warning);">Menunggu</strong></p>
             </div>
 
             <div class="countdown-timer" id="countdownTimer">10:00</div>
 
             <div class="payment-instructions" id="paymentInstructions">
-                <h4>Instruksi Pembayaran:</h4>
-                <ol id="instructionsList">
-                    <li>Scan QR code di atas menggunakan aplikasi mobile banking atau e-wallet</li>
-                    <li>Periksa kembali detail pembayaran</li>
-                    <li>Lakukan pembayaran sebelum waktu habis</li>
-                    <li>Setelah pembayaran berhasil, status akan otomatis terupdate</li>
-                </ol>
+                <!-- Instructions will be loaded here -->
             </div>
 
-            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                <button class="btn btn-outline" onclick="closePaymentModal()" style="flex: 1;">Batalkan</button>
-                <button class="btn btn-success" onclick="confirmPayment()" style="flex: 1;" id="confirmPaymentBtn">Konfirmasi Pembayaran</button>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button class="btn btn-outline" onclick="closePaymentModal()" style="flex: 1;">Batal</button>
+                <button class="btn btn-success" onclick="confirmPayment()" style="flex: 1;" id="confirmPaymentBtn">Konfirmasi</button>
             </div>
 
-            <p style="margin-top: 1rem; font-size: 0.8rem; color: #999;" id="paymentNote">
-                *Untuk metode COD, pembayaran dilakukan saat barang diterima
+            <p style="margin-top: 1rem; font-size: 0.75rem; color: #999;" id="paymentNote">
+                *Untuk COD, bayar saat barang diterima
             </p>
         </div>
     </div>
@@ -1433,49 +1621,37 @@
         // Handle payment method change
         function handlePaymentMethodChange() {
             const method = document.getElementById('paymentMethod').value;
+            const instructions = document.getElementById('paymentInstructions');
+            
             if (method === 'COD') {
-                document.getElementById('qrCodeContainer').style.display = 'none';
-                document.getElementById('qrOverlay').style.display = 'none';
-                document.getElementById('paymentInstructions').innerHTML = `
-                    <h4>Instruksi Pembayaran COD:</h4>
+                instructions.innerHTML = `
+                    <h4>Instruksi COD:</h4>
                     <ol>
                         <li>Pesanan akan diproses setelah konfirmasi</li>
-                        <li>Pembayaran dilakukan saat barang diterima</li>
-                        <li>Siapkan uang pas untuk pembayaran</li>
-                        <li>Periksa barang sebelum membayar</li>
+                        <li>Pembayaran saat barang diterima</li>
+                        <li>Siapkan uang pas</li>
+                        <li>Periksa barang sebelum bayar</li>
                     </ol>
                 `;
-                document.getElementById('paymentNote').style.display = 'block';
-                document.getElementById('confirmPaymentBtn').textContent = 'Konfirmasi Pesanan';
             } else {
-                document.getElementById('qrCodeContainer').style.display = 'flex';
-                document.getElementById('qrOverlay').style.display = 'block';
-                document.getElementById('paymentInstructions').innerHTML = `
+                instructions.innerHTML = `
                     <h4>Instruksi Pembayaran:</h4>
                     <ol>
-                        <li>Scan QR code di atas menggunakan aplikasi mobile banking atau e-wallet</li>
-                        <li>Periksa kembali detail pembayaran</li>
-                        <li>Lakukan pembayaran sebelum waktu habis</li>
-                        <li>Setelah pembayaran berhasil, status akan otomatis terupdate</li>
+                        <li>Scan QR code di atas</li>
+                        <li>Periksa detail pembayaran</li>
+                        <li>Bayar sebelum waktu habis</li>
+                        <li>Status akan otomatis terupdate</li>
                     </ol>
                 `;
-                document.getElementById('paymentNote').style.display = 'block';
-                document.getElementById('confirmPaymentBtn').textContent = 'Konfirmasi Pembayaran';
             }
         }
 
         // Generate QR Code (simulasi)
         function generateQRCode(total, method) {
             const qrContainer = document.getElementById('qrCodeContainer');
-            const paymentMethods = {
-                'Transfer Bank': '🏦',
-                'Kartu Kredit': '💳',
-                'E-Wallet': '📱'
-            };
             
-            // Simulasi QR Code dengan icon dan informasi
             qrContainer.innerHTML = `
-                <i class="fas fa-qrcode" style="font-size: 8rem; color: var(--brown-dark);"></i>
+                <i class="fas fa-qrcode" style="font-size: 6rem; color: var(--brown-dark);"></i>
                 <div class="qr-overlay">
                     ${method} - Rp ${total.toLocaleString('id-ID')}
                 </div>
@@ -1490,6 +1666,8 @@
             if (paymentTimer) {
                 clearInterval(paymentTimer);
             }
+            
+            timerElement.style.display = 'block';
             
             paymentTimer = setInterval(() => {
                 const minutesLeft = Math.floor(timeLeft / 60);
@@ -1567,7 +1745,7 @@
             const method = currentTransaction.paymentMethod;
             
             document.getElementById('paymentMethodTitle').textContent = 
-                method === 'COD' ? 'Konfirmasi Pesanan' : 'Pembayaran ' + method;
+                method === 'COD' ? 'Konfirmasi Pesanan' : 'Pembayaran';
             
             document.getElementById('paymentTotal').textContent = 'Rp ' + total.toLocaleString('id-ID');
             document.getElementById('paymentMethodDisplay').textContent = method;
@@ -1575,13 +1753,15 @@
             if (method !== 'COD') {
                 generateQRCode(total, method);
                 startPaymentTimer(10);
+                document.getElementById('countdownTimer').style.display = 'block';
+                document.getElementById('confirmPaymentBtn').textContent = 'Konfirmasi';
             } else {
-                // For COD, just show confirmation
                 document.getElementById('qrCodeContainer').innerHTML = `
-                    <i class="fas fa-truck" style="font-size: 8rem; color: var(--brown-dark);"></i>
+                    <i class="fas fa-truck" style="font-size: 6rem; color: var(--brown-dark);"></i>
                     <div class="qr-overlay">Bayar saat pengiriman</div>
                 `;
                 document.getElementById('countdownTimer').style.display = 'none';
+                document.getElementById('confirmPaymentBtn').textContent = 'Konfirmasi Pesanan';
             }
             
             document.getElementById('paymentModal').classList.add('show');
@@ -1603,10 +1783,8 @@
             const paymentMethod = currentTransaction.paymentMethod;
             
             if (paymentMethod === 'COD') {
-                // For COD, just save the transaction
                 saveTransaction();
             } else {
-                // For other methods, simulate payment confirmation
                 showNotification('Memproses pembayaran...', 'success');
                 
                 setTimeout(() => {
@@ -1646,8 +1824,8 @@
             
             showNotification(
                 currentTransaction.paymentMethod === 'COD' 
-                    ? 'Pesanan berhasil! Silakan siapkan uang untuk pembayaran COD.' 
-                    : 'Pembayaran berhasil! Terima kasih telah berbelanja.', 
+                    ? 'Pesanan berhasil! Terima kasih.' 
+                    : 'Pembayaran berhasil! Terima kasih.', 
                 'success'
             );
         }
@@ -1678,14 +1856,14 @@
             if (currentCategory === 'all') {
                 title.innerHTML = '<i class="fas fa-box-open"></i> Semua Produk';
             } else {
-                title.innerHTML = `<i class="fas fa-tag"></i> Kategori: ${currentCategory}`;
+                title.innerHTML = `<i class="fas fa-tag"></i> ${currentCategory}`;
             }
             
             if (filteredProducts.length === 0) {
                 grid.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                    <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
                         <i class="fas fa-box-open" style="font-size: 3rem; color: var(--brown-light);"></i>
-                        <p style="color: #666; margin-top: 1rem;">Tidak ada produk ditemukan</p>
+                        <p style="color: #666; margin-top: 1rem;">Tidak ada produk</p>
                     </div>
                 `;
                 return;
@@ -1693,9 +1871,8 @@
 
             grid.innerHTML = filteredProducts.map(product => {
                 const stockStatus = product.stock === 0 ? 'empty' : (product.stock <= 5 ? 'low' : '');
-                const stockText = product.stock === 0 ? 'Stok Habis' : (product.stock <= 5 ? `Stok Menipis (${product.stock})` : `Stok: ${product.stock}`);
+                const stockText = product.stock === 0 ? 'Habis' : (product.stock <= 5 ? 'Menipis' : `Stok ${product.stock}`);
                 
-                // Get first image or use default
                 const productImage = product.images && product.images.length > 0 
                     ? product.images[0] 
                     : null;
@@ -1721,15 +1898,15 @@
                                 <i class="fas ${product.stock === 0 ? 'fa-times-circle' : (product.stock <= 5 ? 'fa-exclamation-circle' : 'fa-check-circle')}"></i>
                                 ${stockText}
                             </div>
-                            <div class="product-description">${product.description.substring(0, 50)}...</div>
+                            <div class="product-description">${product.description.substring(0, 80)}...</div>
                             <div class="product-actions">
                                 <button class="btn btn-primary" onclick="addToCart(${product.id})" ${product.stock === 0 ? 'disabled' : ''}>
                                     <i class="fas fa-cart-plus"></i>
-                                    Keranjang
+                                    <span>Keranjang</span>
                                 </button>
                                 <button class="btn btn-success" onclick="buyNow(${product.id})" ${product.stock === 0 ? 'disabled' : ''}>
                                     <i class="fas fa-bolt"></i>
-                                    Beli
+                                    <span>Beli</span>
                                 </button>
                             </div>
                         </div>
@@ -1768,7 +1945,7 @@
                         <div class="product-detail-price">Rp ${product.price.toLocaleString('id-ID')}</div>
                         <div class="product-detail-stock">
                             <i class="fas ${product.stock > 0 ? 'fa-check-circle' : 'fa-times-circle'}"></i>
-                            ${product.stock > 0 ? `Stok tersedia: ${product.stock}` : 'Stok habis'}
+                            ${product.stock > 0 ? `Stok: ${product.stock}` : 'Stok habis'}
                         </div>
                         <div class="product-detail-description">
                             ${product.description}
@@ -1780,12 +1957,10 @@
                         </div>
                         <div class="product-detail-actions">
                             <button class="btn btn-primary" onclick="addToCartFromDetail()" ${product.stock === 0 ? 'disabled' : ''}>
-                                <i class="fas fa-cart-plus"></i>
-                                Tambah ke Keranjang
+                                <i class="fas fa-cart-plus"></i> Keranjang
                             </button>
                             <button class="btn btn-success" onclick="buyNowFromDetail()" ${product.stock === 0 ? 'disabled' : ''}>
-                                <i class="fas fa-bolt"></i>
-                                Beli Sekarang
+                                <i class="fas fa-bolt"></i> Beli
                             </button>
                         </div>
                     </div>
@@ -1795,18 +1970,17 @@
             document.getElementById('productModal').classList.add('show');
         }
 
-        // Change main image in detail view
+        // Change main image
         function changeMainImage(src, element) {
             document.getElementById('mainProductImage').src = src;
             
-            // Update active class
             document.querySelectorAll('.gallery-thumb').forEach(thumb => {
                 thumb.classList.remove('active');
             });
             element.classList.add('active');
         }
 
-        // Change quantity in detail view
+        // Change quantity
         function changeQuantity(delta) {
             const input = document.getElementById('productQuantity');
             let value = parseInt(input.value) + delta;
@@ -1884,7 +2058,7 @@
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
             closeProductModal();
-            showNotification(`${quantity} ${currentProduct.name} ditambahkan ke keranjang`, 'success');
+            showNotification(`${quantity} ${currentProduct.name} ditambahkan`, 'success');
         }
 
         // Buy now
@@ -1895,7 +2069,6 @@
                 return;
             }
             
-            // Clear cart and add this product
             cart = [{
                 id: product.id,
                 name: product.name,
@@ -1917,7 +2090,6 @@
             
             const quantity = parseInt(document.getElementById('productQuantity').value);
             
-            // Clear cart and add this product with selected quantity
             cart = [{
                 id: currentProduct.id,
                 name: currentProduct.name,
@@ -1931,20 +2103,21 @@
             updateCartCount();
             closeProductModal();
             showCart();
-            showNotification(`${quantity} ${currentProduct.name} siap untuk checkout`, 'success');
+            showNotification(`${quantity} ${currentProduct.name} siap checkout`, 'success');
         }
 
         // Update cart count
         function updateCartCount() {
             const count = cart.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cartCount').textContent = count;
+            document.getElementById('mobileCartCount').textContent = count;
         }
 
         // Update user info
         function updateUserInfo() {
             const userNameSpan = document.getElementById('userName');
             if (currentUser) {
-                userNameSpan.textContent = currentUser.name;
+                userNameSpan.textContent = currentUser.name.split(' ')[0];
             } else {
                 userNameSpan.textContent = 'Login';
             }
@@ -1971,7 +2144,7 @@
                 cartItems.innerHTML = `
                     <div style="text-align: center; padding: 2rem;">
                         <i class="fas fa-shopping-cart" style="font-size: 3rem; color: var(--brown-light);"></i>
-                        <p style="color: #666; margin-top: 1rem;">Keranjang belanja kosong</p>
+                        <p style="color: #666; margin-top: 1rem;">Keranjang kosong</p>
                     </div>
                 `;
                 cartTotal.textContent = 'Rp 0';
@@ -2042,18 +2215,20 @@
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
             displayCartItems();
-            showNotification('Produk dihapus dari keranjang', 'success');
+            showNotification('Produk dihapus', 'success');
         }
 
         // Filter by category
         function filterByCategory(category) {
             currentCategory = category;
             
-            // Update active category
-            document.querySelectorAll('.category-card').forEach(card => {
+            document.querySelectorAll('.category-card, .nav-item').forEach(card => {
                 card.classList.remove('active');
             });
-            event.currentTarget.classList.add('active');
+            
+            if (event) {
+                event.currentTarget.classList.add('active');
+            }
             
             displayProducts();
         }
@@ -2066,7 +2241,7 @@
         // Open checkout modal
         function openCheckoutModal() {
             if (cart.length === 0) {
-                showNotification('Keranjang belanja kosong', 'error');
+                showNotification('Keranjang kosong', 'error');
                 return;
             }
             
@@ -2100,7 +2275,6 @@
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
-            // Simple login (for demo)
             if (email && password) {
                 currentUser = {
                     name: email.split('@')[0],
@@ -2137,9 +2311,9 @@
         function createAnimatedBg() {
             const bg = document.getElementById('animatedBg');
             
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 20; i++) {
                 const span = document.createElement('span');
-                const size = Math.random() * 50 + 20;
+                const size = Math.random() * 40 + 10;
                 const posX = Math.random() * window.innerWidth;
                 const delay = Math.random() * 10;
                 const duration = Math.random() * 10 + 10;
