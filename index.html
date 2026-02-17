@@ -452,6 +452,7 @@
         .section-title span {
             color: var(--text-muted);
             font-size: 0.8rem;
+            cursor: pointer;
         }
 
         /* Mobile Cards untuk Transaksi */
@@ -468,6 +469,11 @@
             padding: 16px;
             border: 1px solid var(--border);
             position: relative;
+            cursor: pointer;
+        }
+
+        .transaction-card:active {
+            transform: scale(0.99);
         }
 
         .transaction-header {
@@ -640,6 +646,10 @@
             font-size: 0.9rem;
             font-weight: 600;
             margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .product-price {
@@ -707,6 +717,11 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            cursor: pointer;
+        }
+
+        .customer-card:active {
+            transform: scale(0.99);
         }
 
         .customer-avatar-large {
@@ -930,6 +945,7 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
+            display: none;
         }
 
         .image-placeholder {
@@ -1004,6 +1020,12 @@
             color: var(--danger);
         }
 
+        .notification-message {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
         /* Loading States */
         .loading-skeleton {
             background: linear-gradient(90deg, var(--bg-input) 25%, var(--bg-card) 50%, var(--bg-input) 75%);
@@ -1068,6 +1090,11 @@
             padding: 8px 0;
             margin-bottom: 16px;
             -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .status-filter::-webkit-scrollbar {
+            display: none;
         }
 
         .status-filter-item {
@@ -1085,6 +1112,14 @@
             background: var(--primary);
             color: #000000;
             border-color: var(--primary);
+        }
+
+        /* All items view */
+        .all-items-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1222,11 +1257,11 @@
 
         <!-- Status Filter -->
         <div class="status-filter" id="statusFilter">
-            <span class="status-filter-item active" onclick="filterStatus('all')">Semua</span>
-            <span class="status-filter-item" onclick="filterStatus('pending')">Pending</span>
-            <span class="status-filter-item" onclick="filterStatus('processing')">Diproses</span>
-            <span class="status-filter-item" onclick="filterStatus('completed')">Selesai</span>
-            <span class="status-filter-item" onclick="filterStatus('cancelled')">Dibatalkan</span>
+            <span class="status-filter-item active" onclick="filterStatus('all', this)">Semua</span>
+            <span class="status-filter-item" onclick="filterStatus('pending', this)">Pending</span>
+            <span class="status-filter-item" onclick="filterStatus('processing', this)">Diproses</span>
+            <span class="status-filter-item" onclick="filterStatus('completed', this)">Selesai</span>
+            <span class="status-filter-item" onclick="filterStatus('cancelled', this)">Dibatalkan</span>
         </div>
 
         <!-- Products Section -->
@@ -1346,7 +1381,7 @@
                     <div class="form-group">
                         <label><i class="fas fa-image"></i> Gambar Produk</label>
                         <div class="image-preview-container" id="imagePreviewContainer" onclick="document.getElementById('productImages').click()">
-                            <img id="imagePreview" class="image-preview" src="" alt="Preview" style="display: none;">
+                            <img id="imagePreview" class="image-preview" src="" alt="Preview">
                             <div class="image-placeholder" id="imagePlaceholder">
                                 <i class="fas fa-cloud-upload-alt"></i>
                                 <p style="font-size: 0.8rem;">Klik untuk upload gambar</p>
@@ -1394,6 +1429,19 @@
         </div>
     </div>
 
+    <!-- All Items Modal (for showing all products/transactions/customers) -->
+    <div class="modal" id="allItemsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-box"></i> <span id="allItemsTitle">Semua Produk</span></h3>
+                <button class="close-modal" onclick="closeAllItemsModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="allItemsBody">
+                <!-- Items will be inserted here -->
+            </div>
+        </div>
+    </div>
+
     <!-- Delete Confirmation Modal -->
     <div class="modal" id="deleteModal">
         <div class="modal-content">
@@ -1416,10 +1464,14 @@
     <!-- Notification -->
     <div class="notification" id="notification">
         <i class="fas" id="notificationIcon"></i>
-        <div id="notificationMessage"></div>
+        <div class="notification-message" id="notificationMessage"></div>
     </div>
 
     <script>
+        // ============================================
+        // DATA PRODUK DENGAN DEFAULT LENGKAP
+        // ============================================
+        
         // Data variables
         let products = [];
         let transactions = [];
@@ -1428,14 +1480,356 @@
         let currentTransactionId = null;
         let uploadedImages = [];
         let currentFilter = 'all';
+        let currentAllItemsType = 'products';
 
-        // Default products
+        // DEFAULT PRODUCTS SUPER LENGKAP (akan muncul jika localStorage kosong)
         const defaultProducts = [
-            { id: 1, name: 'Mie Gacoan Level 1', category: 'makanan', price: 15000, stock: 50, description: 'Mie pedas level 1', images: [], sold: 345 },
-            { id: 2, name: 'Mie Gacoan Level 5', category: 'makanan', price: 17000, stock: 45, description: 'Mie pedas level 5', images: [], sold: 278 },
-            { id: 3, name: 'Dimsum Gacoan', category: 'makanan', price: 22000, stock: 30, description: 'Dimsum ayam', images: [], sold: 412 },
-            { id: 4, name: 'Es Teh Gacoan', category: 'makanan', price: 5000, stock: 100, description: 'Es teh manis', images: [], sold: 567 },
-            { id: 5, name: 'Laptop Gaming', category: 'elektronik', price: 15000000, stock: 5, description: 'Laptop gaming', images: [], sold: 12 }
+            // MAKANAN & MINUMAN
+            { 
+                id: 101, 
+                name: 'Mie Gacoan Level 1', 
+                category: 'makanan', 
+                price: 15000, 
+                stock: 50, 
+                description: 'Mie pedas level 1 dengan topping ayam cincang, pangsit, dan daun bawang. Cocok untuk yang tidak suka pedas.', 
+                images: ['https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=400'], 
+                sold: 345 
+            },
+            { 
+                id: 102, 
+                name: 'Mie Gacoan Level 5', 
+                category: 'makanan', 
+                price: 17000, 
+                stock: 45, 
+                description: 'Mie pedas level 5 dengan tingkat kepedasan sedang, topping ayam cincang dan pangsit goreng.', 
+                images: ['https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=400'], 
+                sold: 278 
+            },
+            { 
+                id: 103, 
+                name: 'Mie Gacoan Level 10', 
+                category: 'makanan', 
+                price: 19000, 
+                stock: 40, 
+                description: 'Mie pedas level 10 untuk pecinta pedas! Topping double ayam cincang dan pangsit.', 
+                images: ['https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=400'], 
+                sold: 412 
+            },
+            { 
+                id: 104, 
+                name: 'Dimsum Gacoan (10 pcs)', 
+                category: 'makanan', 
+                price: 22000, 
+                stock: 30, 
+                description: 'Dimsum ayam dengan kulit tipis, disajikan dengan saus sambal dan kecap.', 
+                images: ['https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=400'], 
+                sold: 567 
+            },
+            { 
+                id: 105, 
+                name: 'Es Teh Gacoan', 
+                category: 'makanan', 
+                price: 5000, 
+                stock: 100, 
+                description: 'Es teh manis dengan rasa segar, cocok untuk melepas dahaga setelah makan pedas.', 
+                images: ['https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=400'], 
+                sold: 890 
+            },
+            { 
+                id: 106, 
+                name: 'Es Jeruk Gacoan', 
+                category: 'makanan', 
+                price: 7000, 
+                stock: 80, 
+                description: 'Es jeruk peras asli dengan manis yang pas.', 
+                images: ['https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=400'], 
+                sold: 456 
+            },
+            
+            // ELEKTRONIK
+            { 
+                id: 201, 
+                name: 'Laptop ASUS ROG Zephyrus', 
+                category: 'elektronik', 
+                price: 15999000, 
+                stock: 8, 
+                description: 'Laptop gaming ASUS ROG dengan RTX 3060, Ryzen 7 6800HS, RAM 16GB DDR5, SSD 1TB NVMe. Layar 165Hz.', 
+                images: ['https://images.unsplash.com/photo-1603302576837-37561b5e8b5c?w=400'], 
+                sold: 23 
+            },
+            { 
+                id: 202, 
+                name: 'MacBook Pro M3 Pro', 
+                category: 'elektronik', 
+                price: 28999000, 
+                stock: 5, 
+                description: 'MacBook Pro 14" dengan chip M3 Pro (11-core CPU, 14-core GPU), RAM 18GB, SSD 512GB.', 
+                images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400'], 
+                sold: 12 
+            },
+            { 
+                id: 203, 
+                name: 'iPhone 15 Pro Max', 
+                category: 'elektronik', 
+                price: 21999000, 
+                stock: 7, 
+                description: 'iPhone 15 Pro Max 256GB dengan titanium, chip A17 Pro, kamera 48MP, USB-C.', 
+                images: ['https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400'], 
+                sold: 34 
+            },
+            { 
+                id: 204, 
+                name: 'Samsung Galaxy S24 Ultra', 
+                category: 'elektronik', 
+                price: 19999000, 
+                stock: 6, 
+                description: 'Samsung S24 Ultra dengan S-Pen, kamera 200MP, Snapdragon 8 Gen 3.', 
+                images: ['https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400'], 
+                sold: 18 
+            },
+            { 
+                id: 205, 
+                name: 'Samsung QLED 65" 4K', 
+                category: 'elektronik', 
+                price: 12999000, 
+                stock: 4, 
+                description: 'Smart TV Samsung QLED 65" 4K dengan Quantum Processor 4K, fitur Gaming Hub.', 
+                images: ['https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=400'], 
+                sold: 8 
+            },
+            { 
+                id: 206, 
+                name: 'Sony WH-1000XM5', 
+                category: 'elektronik', 
+                price: 3999000, 
+                stock: 12, 
+                description: 'Headphone noise cancelling terbaik dari Sony dengan kualitas suara premium.', 
+                images: ['https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=400'], 
+                sold: 45 
+            },
+            
+            // FASHION
+            { 
+                id: 301, 
+                name: 'Kemeja Batik Premium', 
+                category: 'fashion', 
+                price: 349000, 
+                stock: 30, 
+                description: 'Kemeja batik premium dengan bahan katun jepang (100% cotton), motif eksklusif.', 
+                images: ['https://images.unsplash.com/photo-1598033121414-5f6e5d5c9b9d?w=400'], 
+                sold: 89 
+            },
+            { 
+                id: 302, 
+                name: 'Celana Chino Pria', 
+                category: 'fashion', 
+                price: 299000, 
+                stock: 25, 
+                description: 'Celana chino pria bahan stretch cotton, model slim fit, warna hitam, navy, khaki.', 
+                images: ['https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400'], 
+                sold: 67 
+            },
+            { 
+                id: 303, 
+                name: 'Jaket Hoodie Uniqlo', 
+                category: 'fashion', 
+                price: 399000, 
+                stock: 20, 
+                description: 'Jaket hoodie cotton fleece 100% katun, nyaman dan hangat, ukuran S-XXL.', 
+                images: ['https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400'], 
+                sold: 45 
+            },
+            { 
+                id: 304, 
+                name: 'Sepatu Nike Air Max', 
+                category: 'fashion', 
+                price: 1899000, 
+                stock: 12, 
+                description: 'Sepatu Nike Air Max dengan teknologi Nike Air, nyaman untuk lari dan sehari-hari.', 
+                images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'], 
+                sold: 34 
+            },
+            { 
+                id: 305, 
+                name: 'Kaos Polos Cotton', 
+                category: 'fashion', 
+                price: 89000, 
+                stock: 50, 
+                description: 'Kaos polos 30s cotton combed, nyaman dipakai, berbagai warna.', 
+                images: ['https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=400'], 
+                sold: 234 
+            },
+            { 
+                id: 306, 
+                name: 'Jas Almamater', 
+                category: 'fashion', 
+                price: 450000, 
+                stock: 15, 
+                description: 'Jas almamater berkualitas, bahan blazer, bordir nama tersedia.', 
+                images: ['https://images.unsplash.com/photo-1592878904946-b2cd8e780d2e?w=400'], 
+                sold: 28 
+            },
+            
+            // RUMAH TANGGA
+            { 
+                id: 401, 
+                name: 'Blender Philips 2L', 
+                category: 'rumah tangga', 
+                price: 549000, 
+                stock: 12, 
+                description: 'Blender Philips 2 liter dengan 5 kecepatan, cocok untuk jus dan smoothie.', 
+                images: ['https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=400'], 
+                sold: 28 
+            },
+            { 
+                id: 402, 
+                name: 'Rice Cooker Miyako', 
+                category: 'rumah tangga', 
+                price: 399000, 
+                stock: 18, 
+                description: 'Rice cooker Miyako 1.8L dengan fungsi keep warm, kapasitas untuk 8 orang.', 
+                images: ['https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400'], 
+                sold: 56 
+            },
+            { 
+                id: 403, 
+                name: 'Magic Com Cosmos', 
+                category: 'rumah tangga', 
+                price: 329000, 
+                stock: 15, 
+                description: 'Magic com Cosmos dengan panci anti lengket, hemat listrik.', 
+                images: ['https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400'], 
+                sold: 42 
+            },
+            { 
+                id: 404, 
+                name: 'Set Piring Makan 12pcs', 
+                category: 'rumah tangga', 
+                price: 250000, 
+                stock: 20, 
+                description: 'Set piring makan 12 pcs (piring, mangkok, gelas) bahan melamin.', 
+                images: ['https://images.unsplash.com/photo-1603199506016-b9a594b593c0?w=400'], 
+                sold: 34 
+            },
+            { 
+                id: 405, 
+                name: 'Panci Set 5pcs', 
+                category: 'rumah tangga', 
+                price: 450000, 
+                stock: 10, 
+                description: 'Set panci 5 pcs bahan stainless steel, dengan tutup kaca.', 
+                images: ['https://images.unsplash.com/photo-1584990347449-a5c3f14c3a9c?w=400'], 
+                sold: 17 
+            },
+            { 
+                id: 406, 
+                name: 'Sprei Katun Jepang', 
+                category: 'rumah tangga', 
+                price: 189000, 
+                stock: 25, 
+                description: 'Sprei katun jepang ukuran 180x200, motif polos, adem dan nyaman.', 
+                images: ['https://images.unsplash.com/photo-1584102376558-b968e6f4a0a4?w=400'], 
+                sold: 63 
+            }
+        ];
+
+        // Sample transactions (for demo)
+        const sampleTransactions = [
+            {
+                id: 'TRX001',
+                orderNumber: 'ORD240215001',
+                date: new Date().toISOString(),
+                customer: {
+                    name: 'Budi Santoso',
+                    email: 'budi@email.com',
+                    phone: '081234567890',
+                    address: 'Jl. Merdeka No. 45, Jakarta'
+                },
+                items: [
+                    { productId: 101, productName: 'Mie Gacoan Level 1', quantity: 2, price: 15000, subtotal: 30000 },
+                    { productId: 104, productName: 'Dimsum Gacoan (10 pcs)', quantity: 1, price: 22000, subtotal: 22000 }
+                ],
+                total: 52000,
+                paymentMethod: 'Transfer Bank',
+                status: 'completed',
+                date: new Date(Date.now() - 86400000).toISOString()
+            },
+            {
+                id: 'TRX002',
+                orderNumber: 'ORD240215002',
+                date: new Date().toISOString(),
+                customer: {
+                    name: 'Siti Aminah',
+                    email: 'siti@email.com',
+                    phone: '081298765432',
+                    address: 'Jl. Sudirman No. 78, Bandung'
+                },
+                items: [
+                    { productId: 201, productName: 'Laptop ASUS ROG Zephyrus', quantity: 1, price: 15999000, subtotal: 15999000 }
+                ],
+                total: 15999000,
+                paymentMethod: 'Kartu Kredit',
+                status: 'processing',
+                date: new Date(Date.now() - 43200000).toISOString()
+            },
+            {
+                id: 'TRX003',
+                orderNumber: 'ORD240215003',
+                date: new Date().toISOString(),
+                customer: {
+                    name: 'Ahmad Hidayat',
+                    email: 'ahmad@email.com',
+                    phone: '08135557888',
+                    address: 'Jl. Diponegoro No. 12, Surabaya'
+                },
+                items: [
+                    { productId: 301, productName: 'Kemeja Batik Premium', quantity: 2, price: 349000, subtotal: 698000 },
+                    { productId: 302, productName: 'Celana Chino Pria', quantity: 1, price: 299000, subtotal: 299000 },
+                    { productId: 306, productName: 'Jas Almamater', quantity: 1, price: 450000, subtotal: 450000 }
+                ],
+                total: 1447000,
+                paymentMethod: 'E-Wallet',
+                status: 'pending',
+                date: new Date().toISOString()
+            },
+            {
+                id: 'TRX004',
+                orderNumber: 'ORD240215004',
+                date: new Date().toISOString(),
+                customer: {
+                    name: 'Dewi Lestari',
+                    email: 'dewi@email.com',
+                    phone: '08137779999',
+                    address: 'Jl. Gajah Mada No. 34, Yogyakarta'
+                },
+                items: [
+                    { productId: 401, productName: 'Blender Philips 2L', quantity: 1, price: 549000, subtotal: 549000 },
+                    { productId: 402, productName: 'Rice Cooker Miyako', quantity: 1, price: 399000, subtotal: 399000 },
+                    { productId: 405, productName: 'Panci Set 5pcs', quantity: 1, price: 450000, subtotal: 450000 }
+                ],
+                total: 1398000,
+                paymentMethod: 'COD',
+                status: 'cancelled',
+                date: new Date(Date.now() - 172800000).toISOString()
+            },
+            {
+                id: 'TRX005',
+                orderNumber: 'ORD240215005',
+                date: new Date().toISOString(),
+                customer: {
+                    name: 'Rizki Firmansyah',
+                    email: 'rizki@email.com',
+                    phone: '08136667777',
+                    address: 'Jl. Pemuda No. 56, Semarang'
+                },
+                items: [
+                    { productId: 203, productName: 'iPhone 15 Pro Max', quantity: 1, price: 21999000, subtotal: 21999000 }
+                ],
+                total: 21999000,
+                paymentMethod: 'Transfer Bank',
+                status: 'pending',
+                date: new Date().toISOString()
+            }
         ];
 
         // Password verification
@@ -1484,11 +1878,28 @@
 
         // Load data
         function loadData() {
+            // Load products dari localStorage, jika kosong gunakan defaultProducts
             const savedProducts = localStorage.getItem('products');
-            products = savedProducts ? JSON.parse(savedProducts) : [...defaultProducts];
+            if (savedProducts) {
+                products = JSON.parse(savedProducts);
+                // Jika produk di localStorage kurang dari 10, tambahkan default
+                if (products.length < 10) {
+                    products = [...products, ...defaultProducts.slice(products.length)];
+                    localStorage.setItem('products', JSON.stringify(products));
+                }
+            } else {
+                products = [...defaultProducts];
+                localStorage.setItem('products', JSON.stringify(products));
+            }
             
+            // Load transactions
             const savedTransactions = localStorage.getItem('transactions');
-            transactions = savedTransactions ? JSON.parse(savedTransactions) : [];
+            if (savedTransactions) {
+                transactions = JSON.parse(savedTransactions);
+            } else {
+                transactions = [...sampleTransactions];
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+            }
             
             extractCustomers();
             updateStats();
@@ -1549,7 +1960,8 @@
             const category = document.getElementById('categoryFilter')?.value || 'all';
             
             let filtered = products.filter(p => {
-                const matchesSearch = p.name.toLowerCase().includes(searchTerm);
+                const matchesSearch = p.name.toLowerCase().includes(searchTerm) || 
+                                      p.description.toLowerCase().includes(searchTerm);
                 const matchesCategory = category === 'all' || p.category === category;
                 return matchesSearch && matchesCategory;
             }).slice(0, 4); // Show only 4 on home
@@ -1571,7 +1983,7 @@
                 return `
                     <div class="product-card">
                         <div class="product-image">
-                            ${p.images && p.images.length > 0 
+                            ${p.images && p.images.length > 0 && p.images[0] 
                                 ? `<img src="${p.images[0]}" alt="${p.name}">`
                                 : `<i class="fas fa-box"></i>`
                             }
@@ -1579,7 +1991,7 @@
                         </div>
                         <div class="product-info">
                             <div class="product-category">${p.category}</div>
-                            <div class="product-title">${p.name.substring(0, 15)}${p.name.length > 15 ? '...' : ''}</div>
+                            <div class="product-title">${p.name.substring(0, 20)}${p.name.length > 20 ? '...' : ''}</div>
                             <div class="product-price">Rp ${p.price.toLocaleString('id-ID')}</div>
                             <div class="product-stock ${stockClass}">
                                 <i class="fas ${p.stock > 0 ? 'fa-check-circle' : 'fa-times-circle'}"></i>
@@ -1740,14 +2152,14 @@
         }
 
         // Filter functions
-        function filterStatus(status) {
+        function filterStatus(status, element) {
             currentFilter = status;
             
             // Update active filter UI
             document.querySelectorAll('.status-filter-item').forEach(el => {
                 el.classList.remove('active');
             });
-            event.target.classList.add('active');
+            element.classList.add('active');
             
             displayTransactions();
         }
@@ -1762,15 +2174,111 @@
 
         // Show all sections
         function showAllProducts() {
-            showSection('products', document.querySelector('.nav-item[onclick*="products"]'));
+            currentAllItemsType = 'products';
+            document.getElementById('allItemsTitle').innerHTML = '<i class="fas fa-box"></i> Semua Produk';
+            
+            const body = document.getElementById('allItemsBody');
+            body.innerHTML = `
+                <div class="all-items-grid">
+                    ${products.map(p => `
+                        <div class="product-card" style="margin-bottom: 0;">
+                            <div class="product-image">
+                                ${p.images && p.images.length > 0 
+                                    ? `<img src="${p.images[0]}" alt="${p.name}">`
+                                    : `<i class="fas fa-box"></i>`
+                                }
+                            </div>
+                            <div class="product-info">
+                                <div class="product-category">${p.category}</div>
+                                <div class="product-title">${p.name}</div>
+                                <div class="product-price">Rp ${p.price.toLocaleString('id-ID')}</div>
+                                <div class="product-actions">
+                                    <button class="btn-edit" onclick="editProduct(${p.id}); closeAllItemsModal()">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-delete" onclick="openDeleteModal(${p.id}); closeAllItemsModal()">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.getElementById('allItemsModal').classList.add('show');
         }
 
         function showAllTransactions() {
-            showSection('orders', document.querySelector('.nav-item[onclick*="orders"]'));
+            currentAllItemsType = 'transactions';
+            document.getElementById('allItemsTitle').innerHTML = '<i class="fas fa-history"></i> Semua Transaksi';
+            
+            const body = document.getElementById('allItemsBody');
+            body.innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    ${transactions.sort((a,b) => new Date(b.date) - new Date(a.date)).map(t => {
+                        const statusClass = `status-${t.status || 'pending'}`;
+                        return `
+                            <div class="transaction-card" onclick="viewTransactionDetail('${t.id}'); closeAllItemsModal()">
+                                <div class="transaction-header">
+                                    <span class="transaction-id">${t.orderNumber || t.id.substring(0, 8)}</span>
+                                    <span class="transaction-status ${statusClass}">${t.status}</span>
+                                </div>
+                                <div class="transaction-customer">
+                                    <div class="customer-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="customer-info">
+                                        <h4>${t.customer.name}</h4>
+                                        <p>${t.customer.phone}</p>
+                                    </div>
+                                </div>
+                                <div class="transaction-details">
+                                    <span class="transaction-items">${t.items.length} item</span>
+                                    <span class="transaction-total">Rp ${t.total.toLocaleString('id-ID')}</span>
+                                </div>
+                                <div class="transaction-footer">
+                                    <span class="transaction-time">${new Date(t.date).toLocaleDateString('id-ID')}</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+            
+            document.getElementById('allItemsModal').classList.add('show');
         }
 
         function showAllCustomers() {
-            showSection('customers', document.querySelector('.nav-item[onclick*="customers"]'));
+            currentAllItemsType = 'customers';
+            document.getElementById('allItemsTitle').innerHTML = '<i class="fas fa-users"></i> Semua Pelanggan';
+            
+            const body = document.getElementById('allItemsBody');
+            body.innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    ${customers.map(c => `
+                        <div class="customer-card" onclick="viewCustomerDetail('${c.email}'); closeAllItemsModal()">
+                            <div class="customer-avatar-large">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="customer-details">
+                                <div class="customer-name">${c.name}</div>
+                                <div class="customer-meta">${c.phone}</div>
+                                <div class="customer-stats">
+                                    <span><i class="fas fa-shopping-cart"></i> ${c.totalTransactions}x</span>
+                                    <span><i class="fas fa-dollar-sign"></i> Rp ${c.totalSpent.toLocaleString('id-ID')}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.getElementById('allItemsModal').classList.add('show');
+        }
+
+        function closeAllItemsModal() {
+            document.getElementById('allItemsModal').classList.remove('show');
         }
 
         // Navigation
@@ -1782,19 +2290,18 @@
             if (element) element.classList.add('active');
             
             // Scroll to appropriate section
-            let targetId;
             switch(section) {
                 case 'home':
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     break;
                 case 'products':
-                    document.querySelector('.product-grid').scrollIntoView({ behavior: 'smooth' });
+                    showAllProducts();
                     break;
                 case 'orders':
-                    document.querySelector('.transaction-cards').scrollIntoView({ behavior: 'smooth' });
+                    showAllTransactions();
                     break;
                 case 'customers':
-                    document.querySelector('.customer-cards').scrollIntoView({ behavior: 'smooth' });
+                    showAllCustomers();
                     break;
                 case 'reports':
                     document.querySelector('.chart-section').scrollIntoView({ behavior: 'smooth' });
@@ -1844,7 +2351,7 @@
             if (id) {
                 // Edit
                 const index = products.findIndex(p => p.id == id);
-                products[index] = { ...products[index], name, category, price, stock, description };
+                products[index] = { ...products[index], name, category, price, stock, description, images: uploadedImages.length ? uploadedImages : products[index].images };
                 showNotification('Produk berhasil diupdate!', 'success');
             } else {
                 // Add
@@ -1901,13 +2408,6 @@
             if (!transaction) return;
             
             currentTransactionId = id;
-            
-            const statusColors = {
-                'pending': '#b9770e',
-                'processing': '#c9a227',
-                'completed': '#2d6a4f',
-                'cancelled': '#b22222'
-            };
             
             const modalBody = document.getElementById('transactionDetailBody');
             modalBody.innerHTML = `
@@ -1974,7 +2474,7 @@
             const customer = customers.find(c => c.email === email);
             if (!customer) return;
             
-            alert(`👤 ${customer.name}\n📞 ${customer.phone}\n📧 ${customer.email}\n🛒 Total Belanja: ${customer.totalTransactions}x\n💰 Total: Rp ${customer.totalSpent.toLocaleString('id-ID')}`);
+            showNotification(`👤 ${customer.name}\n📞 ${customer.phone}\n🛒 ${customer.totalTransactions}x transaksi\n💰 Rp ${customer.totalSpent.toLocaleString('id-ID')}`, 'success');
         }
 
         // Image functions
@@ -2039,10 +2539,44 @@
             
             const link = document.createElement('a');
             link.setAttribute('href', dataUri);
-            link.setAttribute('download', `dashboard_${new Date().toISOString().slice(0,10)}.json`);
+            link.setAttribute('download', `animateshop_data_${new Date().toISOString().slice(0,10)}.json`);
             link.click();
             
             showNotification('Data berhasil diekspor!', 'success');
+        }
+
+        // Import data function (optional)
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const imported = JSON.parse(e.target.result);
+                        if (imported.products) {
+                            products = imported.products;
+                            localStorage.setItem('products', JSON.stringify(products));
+                        }
+                        if (imported.transactions) {
+                            transactions = imported.transactions;
+                            localStorage.setItem('transactions', JSON.stringify(transactions));
+                        }
+                        loadData();
+                        showNotification('Data berhasil diimpor!', 'success');
+                    } catch (err) {
+                        showNotification('File tidak valid!', 'error');
+                    }
+                };
+                
+                reader.readAsText(file);
+            };
+            
+            input.click();
         }
 
         // Refresh data
