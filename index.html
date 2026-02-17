@@ -2,8 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - AnimateShop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Admin Panel Mobile - AnimateShop</title>
     <style>
         * {
             margin: 0;
@@ -13,28 +13,30 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1a120b;
+            background: #0f0c0a;
             min-height: 100vh;
+            color: #f5e6d3;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Premium Dark Brown Theme */
+        /* Premium Dark Theme - Mobile First */
         :root {
-            --primary-dark: #2c1810;
-            --primary-medium: #5d3a1a;
-            --primary-light: #8b5e3c;
-            --accent-gold: #c9a227;
-            --accent-warm: #d9b382;
-            --bg-dark: #1a120b;
-            --bg-card: #2c1810;
+            --primary: #c9a227;
+            --primary-dark: #a67c1e;
+            --primary-light: #d9b382;
+            --bg-dark: #0f0c0a;
+            --bg-card: #1e1612;
+            --bg-input: #2a1f1a;
             --text-light: #f5e6d3;
             --text-muted: #b8a99a;
-            --border-color: #5d3a1a;
+            --border: #3d2e25;
             --success: #2d6a4f;
             --danger: #b22222;
             --warning: #b9770e;
+            --info: #c9a227;
         }
 
-        /* Animated Background */
+        /* Animated Background - Lightweight untuk mobile */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -43,232 +45,295 @@
             height: 100%;
             z-index: -1;
             overflow: hidden;
+            opacity: 0.3;
         }
 
         .animated-bg span {
             position: absolute;
             display: block;
-            width: 20px;
-            height: 20px;
-            background: rgba(201, 162, 39, 0.05);
-            animation: float 20s linear infinite;
-            bottom: -150px;
+            width: 15px;
+            height: 15px;
+            background: rgba(201, 162, 39, 0.1);
+            animation: float 15s linear infinite;
+            bottom: -100px;
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-1000px) rotate(720deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            100% { transform: translateY(-800px) rotate(720deg); opacity: 0; }
         }
 
-        /* Navbar */
-        .navbar {
-            background: #2c1810;
-            padding: 1rem 5%;
-            position: sticky;
+        /* Login Modal - Mobile Optimized */
+        .password-modal {
+            display: flex;
+            position: fixed;
             top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            border-bottom: 1px solid #5d3a1a;
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
             align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
+            padding: 16px;
         }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #c9a227, #d9b382);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .password-content {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 24px 20px;
+            width: 100%;
+            max-width: 380px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            animation: slideUp 0.4s ease;
         }
 
-        .logo i {
-            background: linear-gradient(135deg, #c9a227, #d9b382);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .admin-badge {
-            background: #5d3a1a;
-            color: #c9a227;
-            padding: 0.3rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            border: 1px solid #c9a227;
+        .password-content i {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: block;
+            text-align: center;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
+        .password-content h2 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.6rem;
+            text-align: center;
         }
 
-        .nav-links a {
-            text-decoration: none;
-            color: #d9b382;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
+        .password-content p {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 0.9rem;
         }
 
-        .nav-links a:hover {
-            color: #c9a227;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 0.5rem 1rem;
-            background: #5d3a1a;
-            border-radius: 30px;
-            cursor: pointer;
+        .password-input {
+            width: 100%;
+            padding: 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 16px;
             transition: all 0.3s;
         }
 
-        .user-info:hover {
-            background: #8b5e3c;
-        }
-
-        .user-info i {
-            color: #c9a227;
-        }
-
-        .user-info span {
-            color: #f5e6d3;
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 20px;
-        }
-
-        /* Header Section */
-        .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .header-title h1 {
-            color: #c9a227;
-            font-size: 2.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .header-title p {
-            color: #b8a99a;
-            margin-top: 0.3rem;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 1rem;
+        .password-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.2);
         }
 
         .btn {
-            padding: 0.8rem 1.5rem;
+            padding: 16px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.95rem;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #000000;
+            border: none;
+            box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #5d3a1a, #8b5e3c);
-            color: #f5e6d3;
-            border: 1px solid #c9a227;
+        .btn:active {
+            transform: scale(0.97);
         }
 
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #8b5e3c, #5d3a1a);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(201, 162, 39, 0.3);
-            color: white;
+        .login-info {
+            background: var(--bg-input);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary);
         }
 
-        .btn-secondary {
-            background: #2c1810;
-            color: #d9b382;
-            border: 1px solid #5d3a1a;
+        .login-info p {
+            margin: 6px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: left;
         }
 
-        .btn-secondary:hover {
-            background: #5d3a1a;
-            color: #c9a227;
-            transform: translateY(-2px);
+        .login-info i {
+            font-size: 1rem;
+            display: inline;
+            color: var(--primary);
+            margin-right: 8px;
         }
 
-        .btn-danger {
-            background: #b22222;
-            color: white;
-            border: 1px solid #ff6b6b;
+        /* Bottom Navigation - Mobile First */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-top: 2px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 8px 16px;
+            z-index: 1000;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
         }
 
-        .btn-danger:hover {
-            background: #8b1a1a;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(178, 34, 34, 0.3);
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: all 0.3s;
+            padding: 6px 12px;
+            border-radius: 30px;
+            flex: 1;
+            max-width: 70px;
         }
 
-        .btn-success {
-            background: #2d6a4f;
-            color: white;
-            border: 1px solid #40916c;
+        .nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 4px;
         }
 
-        .btn-success:hover {
-            background: #1b4d3d;
-            transform: translateY(-2px);
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(201, 162, 39, 0.1);
         }
 
-        /* Stats Cards */
+        .nav-item:active {
+            transform: scale(0.9);
+        }
+
+        /* Header - Mobile Optimized */
+        .mobile-header {
+            background: var(--bg-card);
+            padding: 16px 16px 8px;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000000;
+            font-size: 1.3rem;
+        }
+
+        .logo-text h1 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+
+        .logo-text p {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-actions button {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .header-actions button:active {
+            background: var(--primary);
+            color: #000000;
+        }
+
+        .greeting {
+            background: var(--bg-input);
+            padding: 12px 16px;
+            border-radius: 16px;
+            margin-top: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .greeting h2 {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .greeting p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Main Container - Mobile Padding */
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 16px 16px 80px;
+        }
+
+        /* Stats Cards - Mobile Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
-            background: #2c1810;
-            border-radius: 15px;
-            padding: 1.5rem;
-            border: 1px solid #5d3a1a;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 16px;
+            border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
         }
@@ -280,281 +345,474 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #c9a227, #d9b382, #c9a227);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(201, 162, 39, 0.2);
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
         }
 
         .stat-icon {
-            width: 60px;
-            height: 60px;
-            background: #5d3a1a;
+            width: 45px;
+            height: 45px;
+            background: var(--bg-input);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            color: #c9a227;
-        }
-
-        .stat-info {
-            flex: 1;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 12px;
         }
 
         .stat-info h3 {
-            color: #b8a99a;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .stat-number {
-            color: #f5e6d3;
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 0.2rem;
-        }
-
-        .stat-change {
-            color: #2d6a4f;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.2rem;
-        }
-
-        .stat-change.negative {
-            color: #b22222;
-        }
-
-        /* Search and Filter Section */
-        .search-section {
-            background: #2c1810;
-            padding: 1.5rem;
-            border-radius: 15px;
-            border: 1px solid #5d3a1a;
-            margin-bottom: 2rem;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .search-box {
-            flex: 1;
-            min-width: 250px;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .search-box input {
-            flex: 1;
-            padding: 1rem;
-            background: #1a120b;
-            border: 1px solid #5d3a1a;
-            border-radius: 8px;
-            font-size: 1rem;
-            color: #f5e6d3;
-            transition: all 0.3s;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: #c9a227;
-            box-shadow: 0 0 10px rgba(201, 162, 39, 0.2);
-        }
-
-        .search-box input::placeholder {
-            color: #b8a99a;
-        }
-
-        .search-box button {
-            padding: 0 1.5rem;
-            background: #5d3a1a;
-            color: #c9a227;
-            border: 1px solid #c9a227;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .search-box button:hover {
-            background: #8b5e3c;
-            color: #f5e6d3;
-        }
-
-        .filter-box {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-box select {
-            padding: 1rem;
-            background: #1a120b;
-            border: 1px solid #5d3a1a;
-            border-radius: 8px;
-            color: #f5e6d3;
-            font-size: 1rem;
-            min-width: 150px;
-            cursor: pointer;
-        }
-
-        .filter-box select:focus {
-            outline: none;
-            border-color: #c9a227;
-        }
-
-        .filter-box select option {
-            background: #2c1810;
-            color: #f5e6d3;
-        }
-
-        /* Table Section */
-        .table-section {
-            background: #2c1810;
-            border-radius: 15px;
-            border: 1px solid #5d3a1a;
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        .table-header {
-            padding: 1.2rem 1.5rem;
-            background: #5d3a1a;
-            border-bottom: 2px solid #c9a227;
-        }
-
-        .table-header h3 {
-            color: #c9a227;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            text-align: left;
-            padding: 1.2rem 1rem;
-            background: #5d3a1a;
-            color: #d9b382;
-            font-weight: 600;
-            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            margin-bottom: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        td {
-            padding: 1.2rem 1rem;
-            border-bottom: 1px solid #5d3a1a;
-            color: #f5e6d3;
+        .stat-number {
+            color: var(--text-light);
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 4px;
         }
 
-        tr:last-child td {
-            border-bottom: none;
+        .stat-change {
+            color: var(--success);
+            font-size: 0.65rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        tr:hover td {
-            background: #5d3a1a;
+        /* Search Section - Mobile */
+        .search-section {
+            background: var(--bg-card);
+            padding: 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
         }
 
-        /* Product Image Styles */
-        .product-image-cell {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #5d3a1a;
+        .search-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 14px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-box button {
+            width: 50px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            color: var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .filter-box select {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Section Title */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0 12px;
+        }
+
+        .section-title h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-title span {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Mobile Cards untuk Transaksi */
+        .transaction-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .transaction-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .transaction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .transaction-id {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .transaction-status {
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-pending { background: #b9770e; color: white; }
+        .status-processing { background: #c9a227; color: black; }
+        .status-completed { background: #2d6a4f; color: white; }
+        .status-cancelled { background: #b22222; color: white; }
+
+        .transaction-customer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .customer-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-input);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: var(--primary);
+        }
+
+        .customer-info h4 {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+
+        .customer-info p {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .transaction-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .transaction-items {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .transaction-total {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .transaction-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .transaction-time {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .transaction-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .product-image-cell:hover {
-            transform: scale(1.05);
-            border: 2px solid #c9a227;
+        .action-btn:active {
+            background: var(--primary);
+            color: #000000;
         }
 
-        .product-image-cell img {
+        /* Product Cards - Mobile */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .product-image {
+            height: 120px;
+            background: var(--bg-input);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .product-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .product-image-cell i {
-            font-size: 1.5rem;
-            color: #c9a227;
-        }
-
-        .badge {
-            padding: 0.3rem 0.8rem;
+        .product-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--warning);
+            color: white;
+            padding: 4px 8px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.6rem;
+            font-weight: bold;
+        }
+
+        .product-info {
+            padding: 12px;
+        }
+
+        .product-category {
+            color: var(--primary);
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .product-title {
+            color: var(--text-light);
+            font-size: 0.9rem;
             font-weight: 600;
-            display: inline-block;
+            margin-bottom: 4px;
         }
 
-        .badge-success {
-            background: #2d6a4f;
-            color: white;
+        .product-price {
+            color: var(--primary);
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
         }
 
-        .badge-warning {
-            background: #b9770e;
-            color: white;
-        }
-
-        .badge-danger {
-            background: #b22222;
-            color: white;
-        }
-
-        .badge-info {
-            background: #c9a227;
-            color: #2c1810;
-        }
-
-        .action-buttons {
+        .product-stock {
+            font-size: 0.7rem;
             display: flex;
-            gap: 0.5rem;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 12px;
         }
 
-        .btn-icon {
-            width: 35px;
-            height: 35px;
-            border-radius: 6px;
-            border: 1px solid #5d3a1a;
-            background: #1a120b;
-            color: #d9b382;
+        .stock-low { color: var(--warning); }
+        .stock-out { color: var(--danger); }
+        .stock-ok { color: var(--success); }
+
+        .product-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .product-actions button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
         }
 
-        .btn-icon:hover {
-            background: #c9a227;
-            color: #2c1810;
-            border-color: #c9a227;
+        .btn-edit {
+            background: var(--bg-input);
+            color: var(--primary);
+            border: 1px solid var(--border);
         }
 
-        .btn-icon.delete:hover {
-            background: #b22222;
+        .btn-delete {
+            background: var(--danger);
             color: white;
-            border-color: #b22222;
         }
 
-        /* Modal */
+        /* Customer Cards */
+        .customer-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .customer-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .customer-avatar-large {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-input);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .customer-details {
+            flex: 1;
+        }
+
+        .customer-name {
+            color: var(--text-light);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .customer-meta {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            margin-bottom: 6px;
+        }
+
+        .customer-stats {
+            display: flex;
+            gap: 12px;
+            font-size: 0.7rem;
+        }
+
+        .customer-stats span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .customer-stats i {
+            color: var(--primary);
+        }
+
+        /* Chart Section - Mobile */
+        .chart-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .chart-header h3 {
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .chart-header select {
+            padding: 8px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        .chart-container {
+            height: 150px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            gap: 4px;
+        }
+
+        .bar {
+            width: 100%;
+            background: linear-gradient(to top, var(--primary-dark), var(--primary));
+            border-radius: 6px 6px 0 0;
+            transition: height 0.3s;
+            min-width: 15px;
+        }
+
+        .bar-label {
+            color: var(--text-muted);
+            font-size: 0.6rem;
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        /* Modal - Mobile */
         .modal {
             display: none;
             position: fixed;
@@ -566,296 +824,172 @@
             backdrop-filter: blur(5px);
             z-index: 2000;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
         }
 
         .modal.show {
             display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .modal-content {
-            background: #2c1810;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 800px;
+            background: var(--bg-card);
+            border-radius: 30px 30px 0 0;
+            width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            border: 2px solid #c9a227;
-            box-shadow: 0 10px 40px rgba(201, 162, 39, 0.2);
+            border-top: 2px solid var(--primary);
+            animation: slideUp 0.3s ease;
         }
 
         .modal-header {
-            padding: 1.5rem;
-            border-bottom: 2px solid #5d3a1a;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(135deg, #5d3a1a, #8b5e3c);
+            background: var(--bg-input);
             position: sticky;
             top: 0;
             z-index: 10;
         }
 
         .modal-header h3 {
-            color: #c9a227;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: var(--primary);
+            font-size: 1.2rem;
         }
 
         .close-modal {
             background: none;
             border: none;
             font-size: 1.5rem;
+            color: var(--text-muted);
             cursor: pointer;
-            color: #d9b382;
-            transition: all 0.3s;
-        }
-
-        .close-modal:hover {
-            color: #c9a227;
-            transform: rotate(90deg);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-body {
-            padding: 1.5rem;
+            padding: 20px;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 16px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            color: #c9a227;
-            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--primary);
+            font-size: 0.9rem;
         }
 
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 1rem;
-            background: #1a120b;
-            border: 1px solid #5d3a1a;
-            border-radius: 8px;
-            font-size: 1rem;
-            color: #f5e6d3;
-            transition: all 0.3s;
+            padding: 14px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            font-size: 0.95rem;
+            color: var(--text-light);
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #c9a227;
-            box-shadow: 0 0 10px rgba(201, 162, 39, 0.2);
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
+            background: var(--bg-input);
         }
 
-        .form-group textarea {
-            height: 100px;
-            resize: vertical;
+        .modal-footer .btn {
+            flex: 1;
+            padding: 14px;
+            font-size: 0.95rem;
         }
 
-        /* Image Upload Styles */
-        .product-image-upload {
-            margin-bottom: 1.5rem;
-        }
-
+        /* Image Upload - Mobile */
         .image-preview-container {
             width: 100%;
-            min-height: 200px;
-            border: 2px dashed #5d3a1a;
-            border-radius: 10px;
+            height: 180px;
+            background: var(--bg-input);
+            border: 2px dashed var(--border);
+            border-radius: 16px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 1rem;
+            margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.3s;
-            background: #1a120b;
-            margin-bottom: 1rem;
-        }
-
-        .image-preview-container:hover {
-            border-color: #c9a227;
-            background: #2c1810;
-        }
-
-        .image-preview-container.has-image {
-            border-style: solid;
-            border-color: #c9a227;
         }
 
         .image-preview {
             max-width: 100%;
-            max-height: 200px;
+            max-height: 100%;
             object-fit: contain;
-            border-radius: 8px;
-            display: none;
         }
 
-        .image-preview.show {
-            display: block;
-        }
-
-        .image-preview-placeholder {
+        .image-placeholder {
             text-align: center;
-            color: #b8a99a;
+            color: var(--text-muted);
         }
 
-        .image-preview-placeholder i {
-            font-size: 3rem;
-            color: #5d3a1a;
-            margin-bottom: 0.5rem;
+        .image-placeholder i {
+            font-size: 2.5rem;
+            color: var(--border);
+            margin-bottom: 8px;
         }
 
-        .image-preview-placeholder p {
-            font-size: 0.9rem;
-        }
-
-        .image-input {
-            display: none;
-        }
-
-        .image-upload-btn {
-            background: #5d3a1a;
-            color: #c9a227;
-            border: 1px solid #c9a227;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s;
-        }
-
-        .image-upload-btn:hover {
-            background: #8b5e3c;
-            color: #f5e6d3;
-        }
-
-        /* Image Gallery */
         .image-gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 0.5rem;
-            margin: 1rem 0;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 12px;
         }
 
-        .image-gallery-item {
+        .gallery-item {
             width: 100%;
-            height: 80px;
-            border-radius: 5px;
+            height: 70px;
+            border-radius: 12px;
             overflow: hidden;
-            border: 2px solid #5d3a1a;
-            cursor: pointer;
-            transition: all 0.3s;
+            border: 1px solid var(--border);
         }
 
-        .image-gallery-item:hover {
-            border-color: #c9a227;
-            transform: scale(1.05);
-        }
-
-        .image-gallery-item img {
+        .gallery-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        /* Image Fullscreen Modal */
-        .image-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 5000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .image-modal.show {
-            display: flex;
-        }
-
-        .image-modal-content {
-            max-width: 90%;
-            max-height: 90%;
-        }
-
-        .image-modal-content img {
-            max-width: 100%;
-            max-height: 90vh;
-            border-radius: 10px;
-            border: 3px solid #c9a227;
-        }
-
-        .image-modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: #c9a227;
-            font-size: 2rem;
-            cursor: pointer;
-            background: none;
-            border: none;
-            transition: all 0.3s;
-        }
-
-        .image-modal-close:hover {
-            color: #d9b382;
-            transform: rotate(90deg);
-        }
-
-        .modal-footer {
-            padding: 1.5rem;
-            border-top: 1px solid #5d3a1a;
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-            position: sticky;
-            bottom: 0;
-            background: #2c1810;
         }
 
         /* Notification */
         .notification {
             position: fixed;
             top: 20px;
-            right: 20px;
-            padding: 1rem 1.5rem;
-            background: #2c1810;
-            border-radius: 10px;
-            border-left: 4px solid #2d6a4f;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transform: translateX(400px);
+            left: 16px;
+            right: 16px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 16px;
+            border-left: 4px solid var(--success);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(-150%);
             transition: transform 0.3s;
             z-index: 3000;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            border: 1px solid #5d3a1a;
+            gap: 12px;
+            border: 1px solid var(--border);
         }
 
         .notification.show {
-            transform: translateX(0);
+            transform: translateY(0);
         }
 
         .notification.error {
-            border-left-color: #b22222;
+            border-left-color: var(--danger);
         }
 
         .notification i {
@@ -863,303 +997,94 @@
         }
 
         .notification.success i {
-            color: #2d6a4f;
+            color: var(--success);
         }
 
         .notification.error i {
-            color: #b22222;
+            color: var(--danger);
         }
 
-        .notification-message {
-            color: #f5e6d3;
+        /* Loading States */
+        .loading-skeleton {
+            background: linear-gradient(90deg, var(--bg-input) 25%, var(--bg-card) 50%, var(--bg-input) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
         }
 
-        /* Loading State */
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #c9a227;
-        }
-
-        .loading i {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 3rem;
-            color: #b8a99a;
+            padding: 40px 20px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
         }
 
         .empty-state i {
-            font-size: 4rem;
-            color: #5d3a1a;
-            margin-bottom: 1rem;
-        }
-
-        /* Chart Section */
-        .chart-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .chart-card {
-            background: #2c1810;
-            border-radius: 15px;
-            padding: 1.5rem;
-            border: 1px solid #5d3a1a;
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .chart-header h3 {
-            color: #c9a227;
-        }
-
-        .chart-header select {
-            padding: 0.5rem;
-            background: #1a120b;
-            border: 1px solid #5d3a1a;
-            color: #f5e6d3;
-            border-radius: 5px;
-        }
-
-        .chart-container {
-            height: 300px;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            padding: 1rem 0;
-        }
-
-        .bar {
-            width: 40px;
-            background: linear-gradient(to top, #5d3a1a, #c9a227);
-            border-radius: 5px 5px 0 0;
-            transition: height 0.3s;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .bar:hover {
-            opacity: 0.9;
-            transform: scale(1.05);
-        }
-
-        .bar:hover::after {
-            content: attr(data-value);
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #5d3a1a;
-            color: #c9a227;
-            padding: 0.2rem 0.5rem;
-            border-radius: 3px;
-            font-size: 0.8rem;
-            white-space: nowrap;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header-section {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .chart-section {
-                grid-template-columns: 1fr;
-            }
-
-            .search-section {
-                flex-direction: column;
-            }
-
-            .filter-box {
-                width: 100%;
-            }
-
-            .filter-box select {
-                width: 100%;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #1a120b;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #5d3a1a;
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #c9a227;
-        }
-
-        /* Password Modal */
-        .password-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 4000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .password-modal.show {
-            display: flex;
-        }
-
-        .password-content {
-            background: #2c1810;
-            border-radius: 15px;
-            padding: 2rem;
-            max-width: 400px;
-            width: 90%;
-            border: 2px solid #c9a227;
-            text-align: center;
-        }
-
-        .password-content i {
             font-size: 3rem;
-            color: #c9a227;
-            margin-bottom: 1rem;
+            color: var(--border);
+            margin-bottom: 16px;
         }
 
-        .password-content h2 {
-            color: #c9a227;
-            margin-bottom: 0.5rem;
+        .empty-state p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
         }
 
-        .password-content p {
-            color: #b8a99a;
-            margin-bottom: 1.5rem;
-        }
-
-        .password-input {
-            width: 100%;
-            padding: 1rem;
-            background: #1a120b;
-            border: 1px solid #5d3a1a;
-            border-radius: 8px;
-            color: #f5e6d3;
-            margin-bottom: 1rem;
-        }
-
-        .password-input:focus {
-            outline: none;
-            border-color: #c9a227;
-        }
-
-        .password-error {
-            color: #b22222;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
+        /* Hide desktop elements on mobile */
+        .desktop-only {
             display: none;
         }
 
-        .password-error.show {
+        /* Show mobile elements */
+        .mobile-only {
             display: block;
         }
 
-        /* Login Info */
-        .login-info {
-            background: #5d3a1a;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid #c9a227;
+        /* Touch-friendly adjustments */
+        button, 
+        .nav-item,
+        .action-btn,
+        .product-actions button,
+        .btn {
+            min-height: 44px;
+            min-width: 44px;
         }
 
-        .login-info p {
-            color: #f5e6d3;
-            margin: 0.2rem 0;
+        input, select, textarea {
+            font-size: 16px !important; /* Prevents zoom on iOS */
         }
 
-        .login-info i {
-            color: #c9a227;
-            margin-right: 0.5rem;
-        }
-
-        /* Status Update */
-        .status-update {
+        /* Status Filter */
+        .status-filter {
             display: flex;
-            gap: 0.5rem;
-            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 8px 0;
+            margin-bottom: 16px;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .status-select {
-            padding: 0.3rem;
-            background: #1a120b;
-            border: 1px solid #5d3a1a;
-            color: #f5e6d3;
-            border-radius: 5px;
+        .status-filter-item {
+            padding: 8px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            color: var(--text-muted);
             font-size: 0.8rem;
+            white-space: nowrap;
+            cursor: pointer;
         }
 
-        .customer-detail {
-            background: #1a120b;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 3px solid #c9a227;
-        }
-
-        .customer-detail p {
-            margin: 0.3rem 0;
-            color: #b8a99a;
-        }
-
-        .customer-detail strong {
-            color: #c9a227;
-        }
-
-        .product-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin: 1rem 0;
-        }
-
-        .product-item {
-            background: #1a120b;
-            padding: 0.5rem;
-            border-radius: 5px;
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .status-filter-item.active {
+            background: var(--primary);
+            color: #000000;
+            border-color: var(--primary);
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1168,18 +1093,18 @@
     <!-- Animated Background -->
     <div class="animated-bg" id="animatedBg"></div>
 
-    <!-- Password Modal (First Time) -->
-    <div class="password-modal show" id="passwordModal">
+    <!-- Password Modal -->
+    <div class="password-modal" id="passwordModal">
         <div class="password-content">
             <i class="fas fa-lock"></i>
-            <h2>Admin Authentication</h2>
-            <p>Masukkan password untuk mengakses panel admin</p>
+            <h2>Admin Access</h2>
+            <p>Masukkan password untuk melanjutkan</p>
             <input type="password" class="password-input" id="adminPassword" placeholder="Password" onkeypress="checkPasswordEnter(event)">
-            <div class="password-error" id="passwordError">Password salah! Coba lagi.</div>
-            <button class="btn btn-primary" onclick="verifyPassword()" style="width: 100%;">
+            <div style="color: var(--danger); font-size: 0.85rem; margin-bottom: 12px; text-align: center; display: none;" id="passwordError">Password salah! Coba lagi.</div>
+            <button class="btn" onclick="verifyPassword()">
                 <i class="fas fa-sign-in-alt"></i> Login
             </button>
-            <div class="login-info" style="margin-top: 1rem;">
+            <div class="login-info">
                 <p><i class="fas fa-info-circle"></i> Default: admin123</p>
                 <p><i class="fas fa-users"></i> Total User: <span id="totalUsers">0</span></p>
                 <p><i class="fas fa-shopping-cart"></i> Total Transaksi: <span id="totalTransactions">0</span></p>
@@ -1187,64 +1112,46 @@
         </div>
     </div>
 
-    <!-- Navbar -->
-    <nav class="navbar" id="mainNavbar" style="display: none;">
-        <div class="nav-container">
-            <a href="#" class="logo">
-                <i class="fas fa-store"></i>
-                AnimateShop Admin
-                <span class="admin-badge">Administrator</span>
-            </a>
-            <div class="nav-links">
-                <a href="#" onclick="showSection('dashboard')"><i class="fas fa-home"></i> Dashboard</a>
-                <a href="#" onclick="showSection('products')"><i class="fas fa-box"></i> Produk</a>
-                <a href="#" onclick="showSection('transactions')"><i class="fas fa-shopping-cart"></i> Pesanan</a>
-                <a href="#" onclick="showSection('customers')"><i class="fas fa-users"></i> Pelanggan</a>
-                <a href="#" onclick="showSection('reports')"><i class="fas fa-chart-bar"></i> Laporan</a>
-                <div class="user-info" onclick="logout()">
-                    <i class="fas fa-user"></i>
-                    <span id="adminName">Admin</span>
-                    <i class="fas fa-chevron-down"></i>
+    <!-- Mobile Header -->
+    <div class="mobile-header" id="mainHeader" style="display: none;">
+        <div class="header-top">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>AnimateShop</h1>
+                    <p>Admin Panel</p>
                 </div>
             </div>
+            <div class="header-actions">
+                <button onclick="refreshData()" title="Refresh">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button onclick="logout()" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
         </div>
-    </nav>
+        <div class="greeting" id="greetingSection">
+            <h2 id="welcomeMessage">Selamat datang, Admin!</h2>
+            <p id="dateToday"></p>
+        </div>
+    </div>
 
     <!-- Main Container -->
     <div class="container" id="mainContainer" style="display: none;">
-        <!-- Header Section -->
-        <div class="header-section">
-            <div class="header-title">
-                <h1>
-                    <i class="fas fa-tachometer-alt"></i>
-                    Dashboard Admin
-                </h1>
-                <p>Selamat datang kembali, <span id="welcomeAdmin">Admin</span>! Berikut aktivitas toko Anda hari ini.</p>
-            </div>
-            <div class="header-actions">
-                <button class="btn btn-primary" onclick="openProductModal()">
-                    <i class="fas fa-plus"></i> Tambah Produk
-                </button>
-                <button class="btn btn-secondary" onclick="exportData()">
-                    <i class="fas fa-download"></i> Export Data
-                </button>
-                <button class="btn btn-success" onclick="refreshData()">
-                    <i class="fas fa-sync-alt"></i> Refresh
-                </button>
-            </div>
-        </div>
-
         <!-- Stats Cards -->
-        <div class="stats-grid" id="statsGrid">
+        <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">
                     <i class="fas fa-box"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Total Produk</h3>
+                    <h3>Produk</h3>
                     <div class="stat-number" id="totalProducts">0</div>
                     <div class="stat-change" id="productChange">
-                        <i class="fas fa-arrow-up"></i> Ready stock
+                        <i class="fas fa-boxes"></i> Total
                     </div>
                 </div>
             </div>
@@ -1253,10 +1160,10 @@
                     <i class="fas fa-shopping-cart"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Total Pesanan</h3>
+                    <h3>Pesanan</h3>
                     <div class="stat-number" id="totalOrders">0</div>
                     <div class="stat-change" id="orderChange">
-                        <i class="fas fa-clock"></i> Menunggu proses
+                        <i class="fas fa-clock"></i> Pending
                     </div>
                 </div>
             </div>
@@ -1265,10 +1172,10 @@
                     <i class="fas fa-users"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Total Pelanggan</h3>
+                    <h3>Pelanggan</h3>
                     <div class="stat-number" id="totalCustomers">0</div>
                     <div class="stat-change" id="customerChange">
-                        <i class="fas fa-user-plus"></i> User unik
+                        <i class="fas fa-user-plus"></i> Unik
                     </div>
                 </div>
             </div>
@@ -1277,126 +1184,121 @@
                     <i class="fas fa-dollar-sign"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Total Pendapatan</h3>
+                    <h3>Pendapatan</h3>
                     <div class="stat-number" id="totalRevenue">Rp 0</div>
                     <div class="stat-change" id="revenueChange">
-                        <i class="fas fa-chart-line"></i> Dari semua transaksi
+                        <i class="fas fa-chart-line"></i> Total
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Chart Section -->
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Cari produk...">
+                <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="filter-box">
+                <select id="categoryFilter" onchange="filterByCategory()">
+                    <option value="all">Semua Kategori</option>
+                    <option value="elektronik">Elektronik</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="makanan">Makanan</option>
+                    <option value="rumah tangga">Rumah Tangga</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+            <button class="btn" style="flex: 1;" onclick="openProductModal()">
+                <i class="fas fa-plus"></i> Tambah Produk
+            </button>
+            <button class="btn" style="flex: 1; background: var(--bg-input); color: var(--primary); border: 1px solid var(--border);" onclick="exportData()">
+                <i class="fas fa-download"></i> Export
+            </button>
+        </div>
+
+        <!-- Status Filter -->
+        <div class="status-filter" id="statusFilter">
+            <span class="status-filter-item active" onclick="filterStatus('all')">Semua</span>
+            <span class="status-filter-item" onclick="filterStatus('pending')">Pending</span>
+            <span class="status-filter-item" onclick="filterStatus('processing')">Diproses</span>
+            <span class="status-filter-item" onclick="filterStatus('completed')">Selesai</span>
+            <span class="status-filter-item" onclick="filterStatus('cancelled')">Dibatalkan</span>
+        </div>
+
+        <!-- Products Section -->
+        <div class="section-title">
+            <h3><i class="fas fa-box"></i> Produk Terbaru</h3>
+            <span onclick="showAllProducts()">Lihat Semua</span>
+        </div>
+        <div class="product-grid" id="productGrid">
+            <!-- Products will be loaded here -->
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="section-title">
+            <h3><i class="fas fa-history"></i> Transaksi Terbaru</h3>
+            <span onclick="showAllTransactions()">Lihat Semua</span>
+        </div>
+        <div class="transaction-cards" id="transactionCards">
+            <!-- Transactions will be loaded here -->
+        </div>
+
+        <!-- Customers Section -->
+        <div class="section-title">
+            <h3><i class="fas fa-users"></i> Pelanggan Aktif</h3>
+            <span onclick="showAllCustomers()">Lihat Semua</span>
+        </div>
+        <div class="customer-cards" id="customerCards">
+            <!-- Customers will be loaded here -->
+        </div>
+
+        <!-- Sales Chart -->
         <div class="chart-section">
             <div class="chart-card">
                 <div class="chart-header">
-                    <h3><i class="fas fa-chart-line"></i> Grafik Penjualan (7 Hari Terakhir)</h3>
+                    <h3><i class="fas fa-chart-line"></i> Penjualan</h3>
                     <select id="salesPeriod" onchange="updateSalesChart()">
                         <option value="7">7 Hari</option>
                         <option value="30">30 Hari</option>
-                        <option value="90">90 Hari</option>
                     </select>
                 </div>
-                <div class="chart-container" id="salesChart">
-                    <!-- Bars will be generated here -->
-                </div>
+                <div class="chart-container" id="salesChart"></div>
             </div>
             <div class="chart-card">
                 <div class="chart-header">
-                    <h3><i class="fas fa-chart-pie"></i> Metode Pembayaran</h3>
+                    <h3><i class="fas fa-chart-pie"></i> Pembayaran</h3>
                 </div>
-                <div class="chart-container" id="paymentChart">
-                    <!-- Payment method chart -->
-                </div>
+                <div class="chart-container" id="paymentChart"></div>
             </div>
         </div>
+    </div>
 
-        <!-- Recent Transactions Table -->
-        <div class="table-section">
-            <div class="table-header">
-                <h3><i class="fas fa-history"></i> Transaksi Terbaru</h3>
-                <div style="display: flex; gap: 0.5rem;">
-                    <select id="transactionStatusFilter" onchange="filterTransactions()" style="padding: 0.3rem; background: #1a120b; border: 1px solid #c9a227; color: #f5e6d3; border-radius: 5px;">
-                        <option value="all">Semua Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="processing">Processing</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
-                    </select>
-                    <input type="text" id="transactionSearch" placeholder="Cari transaksi..." style="padding: 0.3rem; background: #1a120b; border: 1px solid #c9a227; color: #f5e6d3; border-radius: 5px;" onkeyup="filterTransactions()">
-                </div>
-            </div>
-            <div class="table-container">
-                <table id="transactionsTable">
-                    <thead>
-                        <tr>
-                            <th>ID Transaksi</th>
-                            <th>Pelanggan</th>
-                            <th>Produk</th>
-                            <th>Total</th>
-                            <th>Metode Bayar</th>
-                            <th>Status</th>
-                            <th>Waktu</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transactionsTableBody">
-                        <!-- Transaction data will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Customers Table -->
-        <div class="table-section">
-            <div class="table-header">
-                <h3><i class="fas fa-users"></i> Daftar Pelanggan</h3>
-                <input type="text" id="customerSearch" placeholder="Cari pelanggan..." style="padding: 0.3rem; background: #1a120b; border: 1px solid #c9a227; color: #f5e6d3; border-radius: 5px;" onkeyup="filterCustomers()">
-            </div>
-            <div class="table-container">
-                <table id="customersTable">
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>No. HP</th>
-                            <th>Total Transaksi</th>
-                            <th>Total Belanja</th>
-                            <th>Terakhir Transaksi</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="customersTableBody">
-                        <!-- Customer data will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Products Table Section -->
-        <div class="table-section">
-            <div class="table-header">
-                <h3><i class="fas fa-box"></i> Daftar Produk</h3>
-            </div>
-            <div class="table-container">
-                <table id="productsTable">
-                    <thead>
-                        <tr>
-                            <th>Produk</th>
-                            <th>Kategori</th>
-                            <th>Harga</th>
-                            <th>Stok</th>
-                            <th>Terjual</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <!-- Data will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav" id="bottomNav" style="display: none;">
+        <a href="#" class="nav-item active" onclick="showSection('home', this)">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('products', this)">
+            <i class="fas fa-box"></i>
+            <span>Produk</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('orders', this)">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Pesanan</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('customers', this)">
+            <i class="fas fa-users"></i>
+            <span>Customer</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('reports', this)">
+            <i class="fas fa-chart-bar"></i>
+            <span>Laporan</span>
+        </a>
     </div>
 
     <!-- Product Modal -->
@@ -1409,10 +1311,12 @@
             <div class="modal-body">
                 <form id="productForm">
                     <input type="hidden" id="productId">
+                    
                     <div class="form-group">
                         <label><i class="fas fa-tag"></i> Nama Produk</label>
-                        <input type="text" id="productName" placeholder="Masukkan nama produk" required>
+                        <input type="text" id="productName" placeholder="Contoh: Mie Gacoan Level 5" required>
                     </div>
+                    
                     <div class="form-group">
                         <label><i class="fas fa-list"></i> Kategori</label>
                         <select id="productCategory" required>
@@ -1422,48 +1326,48 @@
                             <option value="rumah tangga">Rumah Tangga</option>
                         </select>
                     </div>
+                    
                     <div class="form-group">
                         <label><i class="fas fa-dollar-sign"></i> Harga</label>
-                        <input type="number" id="productPrice" placeholder="Masukkan harga" required>
-                    </div>
-                    <div class="form-group">
-                        <label><i class="fas fa-cubes"></i> Stok</label>
-                        <input type="number" id="productStock" placeholder="Masukkan jumlah stok" required>
-                    </div>
-                    <div class="form-group">
-                        <label><i class="fas fa-align-left"></i> Deskripsi</label>
-                        <textarea id="productDescription" placeholder="Masukkan deskripsi produk" required></textarea>
+                        <input type="number" id="productPrice" placeholder="Contoh: 25000" required>
                     </div>
                     
-                    <!-- Image Upload Section -->
+                    <div class="form-group">
+                        <label><i class="fas fa-cubes"></i> Stok</label>
+                        <input type="number" id="productStock" placeholder="Contoh: 50" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-align-left"></i> Deskripsi</label>
+                        <textarea id="productDescription" placeholder="Deskripsi detail produk..." required></textarea>
+                    </div>
+                    
+                    <!-- Image Upload -->
                     <div class="form-group">
                         <label><i class="fas fa-image"></i> Gambar Produk</label>
-                        <div class="product-image-upload">
-                            <div class="image-preview-container" id="imagePreviewContainer" onclick="document.getElementById('productImages').click()">
-                                <img id="imagePreview" class="image-preview" src="" alt="Preview">
-                                <div class="image-preview-placeholder" id="imagePlaceholder">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <p>Klik untuk upload gambar</p>
-                                    <p style="font-size: 0.8rem; color: #5d3a1a;">Format: JPG, PNG, GIF (Max 5MB)</p>
-                                </div>
+                        <div class="image-preview-container" id="imagePreviewContainer" onclick="document.getElementById('productImages').click()">
+                            <img id="imagePreview" class="image-preview" src="" alt="Preview" style="display: none;">
+                            <div class="image-placeholder" id="imagePlaceholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p style="font-size: 0.8rem;">Klik untuk upload gambar</p>
                             </div>
-                            <input type="file" id="productImages" class="image-input" accept="image/*" multiple onchange="previewImages(event)">
-                            <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                                <button type="button" class="image-upload-btn" onclick="document.getElementById('productImages').click()">
-                                    <i class="fas fa-folder-open"></i> Pilih Gambar
-                                </button>
-                                <button type="button" class="image-upload-btn" onclick="clearImages()" id="clearImagesBtn" style="display: none;">
-                                    <i class="fas fa-times"></i> Hapus
-                                </button>
-                            </div>
-                            <div id="imageGallery" class="image-gallery" style="margin-top: 1rem; display: none;"></div>
                         </div>
+                        <input type="file" id="productImages" accept="image/*" multiple style="display: none;" onchange="previewImages(event)">
+                        <div style="display: flex; gap: 8px; justify-content: center;">
+                            <button type="button" class="btn" style="flex: 1; padding: 10px; font-size: 0.8rem;" onclick="document.getElementById('productImages').click()">
+                                <i class="fas fa-folder-open"></i> Pilih Gambar
+                            </button>
+                            <button type="button" class="btn" style="flex: 0.5; padding: 10px; background: var(--danger);" onclick="clearImages()" id="clearImagesBtn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="image-gallery" id="imageGallery"></div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeProductModal()">Batal</button>
-                <button class="btn btn-primary" onclick="saveProduct()">Simpan Produk</button>
+                <button class="btn" style="background: var(--bg-input); color: var(--text-light); border: 1px solid var(--border);" onclick="closeProductModal()">Batal</button>
+                <button class="btn" onclick="saveProduct()">Simpan</button>
             </div>
         </div>
     </div>
@@ -1472,31 +1376,20 @@
     <div class="modal" id="transactionDetailModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3><i class="fas fa-receipt"></i> Detail Transaksi</h3>
+                <h3><i class="fas fa-receipt"></i> Detail Pesanan</h3>
                 <button class="close-modal" onclick="closeTransactionModal()">&times;</button>
             </div>
             <div class="modal-body" id="transactionDetailBody">
-                <!-- Transaction detail will be inserted here -->
+                <!-- Detail will be inserted here -->
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeTransactionModal()">Tutup</button>
-                <button class="btn btn-success" onclick="updateTransactionStatus()" id="updateStatusBtn">Update Status</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Customer Detail Modal -->
-    <div class="modal" id="customerDetailModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-user"></i> Detail Pelanggan</h3>
-                <button class="close-modal" onclick="closeCustomerModal()">&times;</button>
-            </div>
-            <div class="modal-body" id="customerDetailBody">
-                <!-- Customer detail will be inserted here -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeCustomerModal()">Tutup</button>
+                <button class="btn" style="background: var(--bg-input); color: var(--text-light);" onclick="closeTransactionModal()">Tutup</button>
+                <select id="statusUpdate" class="btn" style="flex: 1; background: var(--primary); color: #000000;" onchange="updateMobileTransactionStatus()">
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
             </div>
         </div>
     </div>
@@ -1504,102 +1397,45 @@
     <!-- Delete Confirmation Modal -->
     <div class="modal" id="deleteModal">
         <div class="modal-content">
-            <div class="modal-header" style="background: linear-gradient(135deg, #b22222, #8b1a1a);">
+            <div class="modal-header" style="background: var(--danger);">
                 <h3><i class="fas fa-exclamation-triangle"></i> Konfirmasi Hapus</h3>
                 <button class="close-modal" onclick="closeDeleteModal()">&times;</button>
             </div>
-            <div class="modal-body" style="text-align: center; padding: 2rem;">
-                <i class="fas fa-trash-alt" style="font-size: 4rem; color: #b22222; margin-bottom: 1rem;"></i>
-                <h3 style="color: #f5e6d3; margin-bottom: 1rem;">Yakin ingin menghapus?</h3>
-                <p style="color: #b8a99a;">Tindakan ini tidak dapat dibatalkan!</p>
+            <div class="modal-body" style="text-align: center;">
+                <i class="fas fa-trash-alt" style="font-size: 3rem; color: var(--danger); margin-bottom: 16px;"></i>
+                <h3 style="margin-bottom: 8px;">Yakin ingin menghapus?</h3>
+                <p style="color: var(--text-muted);">Tindakan ini tidak dapat dibatalkan!</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeDeleteModal()">Batal</button>
-                <button class="btn btn-danger" onclick="confirmDelete()">Hapus Permanen</button>
+                <button class="btn" style="background: var(--bg-input); color: var(--text-light);" onclick="closeDeleteModal()">Batal</button>
+                <button class="btn" style="background: var(--danger);" onclick="confirmDelete()">Hapus</button>
             </div>
-        </div>
-    </div>
-
-    <!-- Image Fullscreen Modal -->
-    <div class="image-modal" id="imageFullscreenModal">
-        <span class="image-modal-close" onclick="closeImageModal()">&times;</span>
-        <div class="image-modal-content" id="fullscreenImageContainer">
-            <img id="fullscreenImage" src="" alt="Fullscreen">
         </div>
     </div>
 
     <!-- Notification -->
     <div class="notification" id="notification">
         <i class="fas" id="notificationIcon"></i>
-        <div class="notification-message" id="notificationMessage"></div>
+        <div id="notificationMessage"></div>
     </div>
 
     <script>
-        // Data produk
+        // Data variables
         let products = [];
-        let deleteId = null;
-        
-        // Data transaksi dari user
         let transactions = [];
-        
-        // Data pelanggan unik
         let customers = [];
-        
-        // Store uploaded images
+        let deleteId = null;
+        let currentTransactionId = null;
         let uploadedImages = [];
+        let currentFilter = 'all';
 
-        // Default products with placeholder images
+        // Default products
         const defaultProducts = [
-            {
-                id: 1,
-                name: 'Laptop Premium',
-                category: 'elektronik',
-                price: 12999000,
-                stock: 10,
-                description: 'Laptop dengan performa tinggi untuk produktivitas maksimal',
-                images: ['https://via.placeholder.com/300x200?text=Laptop+Premium'],
-                sold: 45
-            },
-            {
-                id: 2,
-                name: 'Smartphone Pro',
-                category: 'elektronik',
-                price: 5999000,
-                stock: 15,
-                description: 'Smartphone dengan kamera canggih dan baterai tahan lama',
-                images: ['https://via.placeholder.com/300x200?text=Smartphone+Pro'],
-                sold: 78
-            },
-            {
-                id: 3,
-                name: 'Headphone Wireless',
-                category: 'elektronik',
-                price: 1299000,
-                stock: 20,
-                description: 'Headphone dengan suara jernih dan noise cancellation',
-                images: ['https://via.placeholder.com/300x200?text=Headphone'],
-                sold: 112
-            },
-            {
-                id: 4,
-                name: 'Kemeja Pria',
-                category: 'fashion',
-                price: 299000,
-                stock: 30,
-                description: 'Kemeja casual bahan katun nyaman dipakai',
-                images: ['https://via.placeholder.com/300x200?text=Kemeja'],
-                sold: 156
-            },
-            {
-                id: 5,
-                name: 'Mie Instan Premium',
-                category: 'makanan',
-                price: 25000,
-                stock: 100,
-                description: 'Mie instan rasa premium, siap santap',
-                images: ['https://via.placeholder.com/300x200?text=Mie+Instan'],
-                sold: 234
-            }
+            { id: 1, name: 'Mie Gacoan Level 1', category: 'makanan', price: 15000, stock: 50, description: 'Mie pedas level 1', images: [], sold: 345 },
+            { id: 2, name: 'Mie Gacoan Level 5', category: 'makanan', price: 17000, stock: 45, description: 'Mie pedas level 5', images: [], sold: 278 },
+            { id: 3, name: 'Dimsum Gacoan', category: 'makanan', price: 22000, stock: 30, description: 'Dimsum ayam', images: [], sold: 412 },
+            { id: 4, name: 'Es Teh Gacoan', category: 'makanan', price: 5000, stock: 100, description: 'Es teh manis', images: [], sold: 567 },
+            { id: 5, name: 'Laptop Gaming', category: 'elektronik', price: 15000000, stock: 5, description: 'Laptop gaming', images: [], sold: 12 }
         ];
 
         // Password verification
@@ -1608,67 +1444,53 @@
             const error = document.getElementById('passwordError');
             
             if (password === 'admin123') {
-                document.getElementById('passwordModal').classList.remove('show');
-                document.getElementById('mainNavbar').style.display = 'block';
+                document.getElementById('passwordModal').style.display = 'none';
+                document.getElementById('mainHeader').style.display = 'block';
                 document.getElementById('mainContainer').style.display = 'block';
+                document.getElementById('bottomNav').style.display = 'flex';
                 
-                // Set welcome message
+                // Set greeting
                 const hours = new Date().getHours();
                 let greeting = 'Selamat datang';
                 if (hours < 12) greeting = 'Selamat pagi';
                 else if (hours < 18) greeting = 'Selamat siang';
                 else greeting = 'Selamat malam';
                 
-                document.getElementById('welcomeAdmin').textContent = `${greeting}, Admin`;
+                document.getElementById('welcomeMessage').textContent = `${greeting}, Admin!`;
+                document.getElementById('dateToday').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
                 
                 loadData();
-                showNotification('Login berhasil! Selamat datang Admin', 'success');
+                showNotification('Login berhasil!', 'success');
             } else {
-                error.classList.add('show');
+                error.style.display = 'block';
                 document.getElementById('adminPassword').value = '';
             }
         }
 
         function checkPasswordEnter(event) {
-            if (event.key === 'Enter') {
-                verifyPassword();
-            }
+            if (event.key === 'Enter') verifyPassword();
         }
 
-        // Logout
         function logout() {
             if (confirm('Yakin ingin logout?')) {
-                document.getElementById('passwordModal').classList.add('show');
-                document.getElementById('mainNavbar').style.display = 'none';
+                document.getElementById('passwordModal').style.display = 'flex';
+                document.getElementById('mainHeader').style.display = 'none';
                 document.getElementById('mainContainer').style.display = 'none';
+                document.getElementById('bottomNav').style.display = 'none';
                 document.getElementById('adminPassword').value = '';
-                document.getElementById('passwordError').classList.remove('show');
-                showNotification('Anda telah logout', 'success');
+                document.getElementById('passwordError').style.display = 'none';
             }
         }
 
-        // Load data dari localStorage (terkoneksi dengan index.html)
+        // Load data
         function loadData() {
-            // Load products
             const savedProducts = localStorage.getItem('products');
-            if (savedProducts) {
-                products = JSON.parse(savedProducts);
-            } else {
-                products = [...defaultProducts];
-                localStorage.setItem('products', JSON.stringify(products));
-            }
+            products = savedProducts ? JSON.parse(savedProducts) : [...defaultProducts];
             
-            // Load transactions dari index.html
             const savedTransactions = localStorage.getItem('transactions');
-            if (savedTransactions) {
-                transactions = JSON.parse(savedTransactions);
-            } else {
-                transactions = [];
-            }
+            transactions = savedTransactions ? JSON.parse(savedTransactions) : [];
             
-            // Extract unique customers from transactions
             extractCustomers();
-            
             updateStats();
             displayProducts();
             displayTransactions();
@@ -1678,408 +1500,230 @@
             updateLoginStats();
         }
 
-        // Extract unique customers from transactions
         function extractCustomers() {
-            const customerMap = new Map();
-            
-            transactions.forEach(trx => {
-                const email = trx.customer.email;
-                if (!customerMap.has(email)) {
-                    customerMap.set(email, {
-                        id: customerMap.size + 1,
-                        name: trx.customer.name,
-                        email: trx.customer.email,
-                        phone: trx.customer.phone,
-                        address: trx.customer.address,
+            const map = new Map();
+            transactions.forEach(t => {
+                const email = t.customer.email;
+                if (!map.has(email)) {
+                    map.set(email, {
+                        name: t.customer.name,
+                        email: t.customer.email,
+                        phone: t.customer.phone,
                         totalTransactions: 1,
-                        totalSpent: trx.total,
-                        lastTransaction: trx.date,
-                        transactions: [trx.id]
+                        totalSpent: t.total,
+                        lastTransaction: t.date
                     });
                 } else {
-                    const customer = customerMap.get(email);
-                    customer.totalTransactions++;
-                    customer.totalSpent += trx.total;
-                    customer.lastTransaction = new Date(customer.lastTransaction) > new Date(trx.date) ? customer.lastTransaction : trx.date;
-                    customer.transactions.push(trx.id);
+                    const c = map.get(email);
+                    c.totalTransactions++;
+                    c.totalSpent += t.total;
                 }
             });
-            
-            customers = Array.from(customerMap.values());
+            customers = Array.from(map.values());
         }
 
-        // Update login stats
+        function updateStats() {
+            document.getElementById('totalProducts').textContent = products.length;
+            document.getElementById('totalOrders').textContent = transactions.length;
+            document.getElementById('totalCustomers').textContent = customers.length;
+            
+            const totalRevenue = transactions.reduce((sum, t) => sum + t.total, 0);
+            document.getElementById('totalRevenue').textContent = 'Rp ' + totalRevenue.toLocaleString('id-ID');
+            
+            const pendingCount = transactions.filter(t => t.status === 'pending').length;
+            document.getElementById('orderChange').innerHTML = `<i class="fas fa-clock"></i> ${pendingCount} pending`;
+            
+            const lowStock = products.filter(p => p.stock <= 5).length;
+            document.getElementById('productChange').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${lowStock} menipis`;
+        }
+
         function updateLoginStats() {
             document.getElementById('totalUsers').textContent = customers.length;
             document.getElementById('totalTransactions').textContent = transactions.length;
         }
 
-        // Update statistics based on real data
-        function updateStats() {
-            // Total produk
-            document.getElementById('totalProducts').textContent = products.length;
+        // Display products in grid
+        function displayProducts() {
+            const grid = document.getElementById('productGrid');
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            const category = document.getElementById('categoryFilter')?.value || 'all';
             
-            // Total pesanan (transactions)
-            document.getElementById('totalOrders').textContent = transactions.length;
+            let filtered = products.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(searchTerm);
+                const matchesCategory = category === 'all' || p.category === category;
+                return matchesSearch && matchesCategory;
+            }).slice(0, 4); // Show only 4 on home
             
-            // Total pelanggan unik
-            document.getElementById('totalCustomers').textContent = customers.length;
-            
-            // Total pendapatan
-            const totalRevenue = transactions.reduce((sum, t) => sum + t.total, 0);
-            document.getElementById('totalRevenue').textContent = 'Rp ' + totalRevenue.toLocaleString('id-ID');
-            
-            // Update perubahan
-            const pendingOrders = transactions.filter(t => t.status === 'pending').length;
-            document.getElementById('orderChange').innerHTML = `<i class="fas fa-clock"></i> ${pendingOrders} menunggu proses`;
-            
-            const productStock = products.filter(p => p.stock <= 5).length;
-            document.getElementById('productChange').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${productStock} produk stok menipis`;
-        }
-
-        // Display transactions in table
-        function displayTransactions() {
-            const tbody = document.getElementById('transactionsTableBody');
-            const statusFilter = document.getElementById('transactionStatusFilter').value;
-            const searchTerm = document.getElementById('transactionSearch')?.value.toLowerCase() || '';
-            
-            let filteredTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // Filter by status
-            if (statusFilter !== 'all') {
-                filteredTransactions = filteredTransactions.filter(t => t.status === statusFilter);
-            }
-            
-            // Filter by search
-            if (searchTerm) {
-                filteredTransactions = filteredTransactions.filter(t => 
-                    t.orderNumber?.toLowerCase().includes(searchTerm) ||
-                    t.customer.name.toLowerCase().includes(searchTerm) ||
-                    t.customer.email.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            if (filteredTransactions.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="8" style="text-align: center; padding: 2rem;">
-                            <i class="fas fa-shopping-cart" style="font-size: 2rem; color: #5d3a1a;"></i>
-                            <p style="color: #b8a99a; margin-top: 1rem;">Belum ada transaksi</p>
-                        </td>
-                    </tr>
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 30px; color: var(--text-muted);">
+                        <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <p>Tidak ada produk</p>
+                    </div>
                 `;
                 return;
             }
-
-            tbody.innerHTML = filteredTransactions.map(trx => {
-                const statusColors = {
-                    'pending': '#b9770e',
-                    'processing': '#c9a227',
-                    'completed': '#2d6a4f',
-                    'cancelled': '#b22222'
-                };
+            
+            grid.innerHTML = filtered.map(p => {
+                const stockClass = p.stock === 0 ? 'stock-out' : (p.stock <= 5 ? 'stock-low' : 'stock-ok');
+                const stockText = p.stock === 0 ? 'Habis' : (p.stock <= 5 ? 'Menipis' : 'Tersedia');
                 
+                return `
+                    <div class="product-card">
+                        <div class="product-image">
+                            ${p.images && p.images.length > 0 
+                                ? `<img src="${p.images[0]}" alt="${p.name}">`
+                                : `<i class="fas fa-box"></i>`
+                            }
+                            ${p.stock <= 5 ? '<span class="product-badge">Stok Terbatas</span>' : ''}
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">${p.category}</div>
+                            <div class="product-title">${p.name.substring(0, 15)}${p.name.length > 15 ? '...' : ''}</div>
+                            <div class="product-price">Rp ${p.price.toLocaleString('id-ID')}</div>
+                            <div class="product-stock ${stockClass}">
+                                <i class="fas ${p.stock > 0 ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                                ${stockText}
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn-edit" onclick="editProduct(${p.id})">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn-delete" onclick="openDeleteModal(${p.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Display transactions as cards
+        function displayTransactions() {
+            const container = document.getElementById('transactionCards');
+            
+            let filtered = transactions.filter(t => currentFilter === 'all' || t.status === currentFilter)
+                                      .sort((a, b) => new Date(b.date) - new Date(a.date))
+                                      .slice(0, 3); // Show only 3 on home
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 30px; background: var(--bg-card); border-radius: 20px;">
+                        <i class="fas fa-shopping-cart" style="font-size: 2rem; color: var(--text-muted); margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-muted);">Belum ada transaksi</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filtered.map(t => {
+                const statusClass = `status-${t.status || 'pending'}`;
                 const statusText = {
                     'pending': 'Menunggu',
                     'processing': 'Diproses',
                     'completed': 'Selesai',
                     'cancelled': 'Dibatalkan'
-                };
-                
-                // Get first product for display
-                const firstItem = trx.items[0];
-                const itemCount = trx.items.length;
+                }[t.status] || 'Pending';
                 
                 return `
-                    <tr>
-                        <td><span style="color: #c9a227; font-weight: 600;">${trx.orderNumber || trx.id}</span></td>
-                        <td>
-                            <div>
-                                <div style="font-weight: 600;">${trx.customer.name}</div>
-                                <div style="font-size: 0.8rem; color: #b8a99a;">${trx.customer.email}</div>
+                    <div class="transaction-card" onclick="viewTransactionDetail('${t.id}')">
+                        <div class="transaction-header">
+                            <span class="transaction-id">${t.orderNumber || t.id.substring(0, 8)}</span>
+                            <span class="transaction-status ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="transaction-customer">
+                            <div class="customer-avatar">
+                                <i class="fas fa-user"></i>
                             </div>
-                        </td>
-                        <td>
-                            ${firstItem.productName} ${itemCount > 1 ? `+${itemCount-1} lainnya` : ''}
-                            <div style="font-size: 0.8rem; color: #b8a99a;">${trx.items.length} item</div>
-                        </td>
-                        <td><span style="color: #c9a227; font-weight: 600;">Rp ${trx.total.toLocaleString('id-ID')}</span></td>
-                        <td>${trx.paymentMethod}</td>
-                        <td>
-                            <span class="badge" style="background: ${statusColors[trx.status] || '#5d3a1a'}; color: white;">
-                                ${statusText[trx.status] || trx.status}
-                            </span>
-                        </td>
-                        <td>${new Date(trx.date).toLocaleString('id-ID')}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon" onclick="viewTransactionDetail('${trx.id}')" title="Detail">
-                                    <i class="fas fa-eye"></i>
+                            <div class="customer-info">
+                                <h4>${t.customer.name}</h4>
+                                <p>${t.customer.phone}</p>
+                            </div>
+                        </div>
+                        <div class="transaction-details">
+                            <span class="transaction-items">${t.items.length} item</span>
+                            <span class="transaction-total">Rp ${t.total.toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="transaction-footer">
+                            <span class="transaction-time">${new Date(t.date).toLocaleDateString('id-ID')}</span>
+                            <div class="transaction-actions">
+                                <button class="action-btn" onclick="event.stopPropagation(); updateTransactionStatus('${t.id}', 'processing')">
+                                    <i class="fas fa-check"></i>
                                 </button>
-                                <select class="status-select" onchange="updateTransactionStatus('${trx.id}', this.value)" title="Update Status">
-                                    <option value="pending" ${trx.status === 'pending' ? 'selected' : ''}>Pending</option>
-                                    <option value="processing" ${trx.status === 'processing' ? 'selected' : ''}>Processing</option>
-                                    <option value="completed" ${trx.status === 'completed' ? 'selected' : ''}>Completed</option>
-                                    <option value="cancelled" ${trx.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-                                </select>
                             </div>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                 `;
             }).join('');
         }
 
-        // Filter transactions
-        function filterTransactions() {
-            displayTransactions();
-        }
-
-        // Display customers in table
+        // Display customers as cards
         function displayCustomers() {
-            const tbody = document.getElementById('customersTableBody');
-            const searchTerm = document.getElementById('customerSearch')?.value.toLowerCase() || '';
+            const container = document.getElementById('customerCards');
             
-            let filteredCustomers = [...customers];
-            
-            if (searchTerm) {
-                filteredCustomers = filteredCustomers.filter(c => 
-                    c.name.toLowerCase().includes(searchTerm) ||
-                    c.email.toLowerCase().includes(searchTerm) ||
-                    c.phone.includes(searchTerm)
-                );
-            }
-            
-            if (filteredCustomers.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" style="text-align: center; padding: 2rem;">
-                            <i class="fas fa-users" style="font-size: 2rem; color: #5d3a1a;"></i>
-                            <p style="color: #b8a99a; margin-top: 1rem;">Belum ada pelanggan</p>
-                        </td>
-                    </tr>
+            if (customers.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 30px; background: var(--bg-card); border-radius: 20px;">
+                        <i class="fas fa-users" style="font-size: 2rem; color: var(--text-muted); margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-muted);">Belum ada pelanggan</p>
+                    </div>
                 `;
                 return;
             }
-
-            tbody.innerHTML = filteredCustomers.map(customer => {
-                return `
-                    <tr>
-                        <td>
-                            <div>
-                                <div style="font-weight: 600;">${customer.name}</div>
-                                <div style="font-size: 0.8rem; color: #b8a99a;">${customer.address?.substring(0, 30)}...</div>
-                            </div>
-                        </td>
-                        <td>${customer.email}</td>
-                        <td>${customer.phone}</td>
-                        <td>${customer.totalTransactions}x</td>
-                        <td><span style="color: #c9a227;">Rp ${customer.totalSpent.toLocaleString('id-ID')}</span></td>
-                        <td>${new Date(customer.lastTransaction).toLocaleDateString('id-ID')}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon" onclick="viewCustomerDetail('${customer.email}')" title="Detail">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // Filter customers
-        function filterCustomers() {
-            displayCustomers();
-        }
-
-        // View transaction detail
-        function viewTransactionDetail(transactionId) {
-            const transaction = transactions.find(t => t.id === transactionId || t.orderNumber === transactionId);
-            if (!transaction) return;
             
-            const statusColors = {
-                'pending': '#b9770e',
-                'processing': '#c9a227',
-                'completed': '#2d6a4f',
-                'cancelled': '#b22222'
-            };
-            
-            const modalBody = document.getElementById('transactionDetailBody');
-            modalBody.innerHTML = `
-                <div class="customer-detail">
-                    <h4 style="color: #c9a227; margin-bottom: 1rem;">Informasi Pelanggan</h4>
-                    <p><strong>Nama:</strong> ${transaction.customer.name}</p>
-                    <p><strong>Email:</strong> ${transaction.customer.email}</p>
-                    <p><strong>No. HP:</strong> ${transaction.customer.phone}</p>
-                    <p><strong>Alamat:</strong> ${transaction.customer.address}</p>
-                </div>
-                
-                <div class="customer-detail">
-                    <h4 style="color: #c9a227; margin-bottom: 1rem;">Informasi Transaksi</h4>
-                    <p><strong>ID Transaksi:</strong> ${transaction.orderNumber || transaction.id}</p>
-                    <p><strong>Tanggal:</strong> ${new Date(transaction.date).toLocaleString('id-ID')}</p>
-                    <p><strong>Metode Pembayaran:</strong> ${transaction.paymentMethod}</p>
-                    <p><strong>Status:</strong> 
-                        <span class="badge" style="background: ${statusColors[transaction.status]}; color: white;">
-                            ${transaction.status}
-                        </span>
-                    </p>
-                </div>
-                
-                <div class="customer-detail">
-                    <h4 style="color: #c9a227; margin-bottom: 1rem;">Detail Produk</h4>
-                    <div class="product-list">
-                        ${transaction.items.map(item => `
-                            <div class="product-item">
-                                <div>
-                                    <div style="font-weight: 600;">${item.productName}</div>
-                                    <div style="font-size: 0.8rem; color: #b8a99a;">${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}</div>
-                                </div>
-                                <div style="color: #c9a227;">Rp ${item.subtotal.toLocaleString('id-ID')}</div>
-                            </div>
-                        `).join('')}
+            container.innerHTML = customers.slice(0, 3).map(c => `
+                <div class="customer-card" onclick="viewCustomerDetail('${c.email}')">
+                    <div class="customer-avatar-large">
+                        <i class="fas fa-user"></i>
                     </div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #5d3a1a;">
-                        <strong style="color: #c9a227;">Total</strong>
-                        <strong style="color: #c9a227;">Rp ${transaction.total.toLocaleString('id-ID')}</strong>
-                    </div>
-                </div>
-                
-                ${transaction.notes ? `
-                    <div class="customer-detail">
-                        <h4 style="color: #c9a227; margin-bottom: 1rem;">Catatan</h4>
-                        <p>${transaction.notes}</p>
-                    </div>
-                ` : ''}
-            `;
-            
-            // Store current transaction ID for status update
-            window.currentTransactionId = transaction.id || transaction.orderNumber;
-            
-            document.getElementById('transactionDetailModal').classList.add('show');
-        }
-
-        // Update transaction status
-        function updateTransactionStatus(transactionId, newStatus) {
-            const id = transactionId || window.currentTransactionId;
-            const transaction = transactions.find(t => t.id === id || t.orderNumber === id);
-            
-            if (transaction) {
-                transaction.status = newStatus;
-                localStorage.setItem('transactions', JSON.stringify(transactions));
-                
-                // Update UI
-                displayTransactions();
-                if (document.getElementById('transactionDetailModal').classList.contains('show')) {
-                    viewTransactionDetail(id);
-                }
-                
-                showNotification(`Status transaksi diupdate menjadi ${newStatus}`, 'success');
-            }
-        }
-
-        // Close transaction modal
-        function closeTransactionModal() {
-            document.getElementById('transactionDetailModal').classList.remove('show');
-        }
-
-        // View customer detail
-        function viewCustomerDetail(email) {
-            const customer = customers.find(c => c.email === email);
-            if (!customer) return;
-            
-            const customerTransactions = transactions.filter(t => t.customer.email === email);
-            
-            const modalBody = document.getElementById('customerDetailBody');
-            modalBody.innerHTML = `
-                <div class="customer-detail">
-                    <h4 style="color: #c9a227; margin-bottom: 1rem;">Informasi Pelanggan</h4>
-                    <p><strong>Nama:</strong> ${customer.name}</p>
-                    <p><strong>Email:</strong> ${customer.email}</p>
-                    <p><strong>No. HP:</strong> ${customer.phone}</p>
-                    <p><strong>Alamat:</strong> ${customer.address}</p>
-                </div>
-                
-                <div class="customer-detail">
-                    <h4 style="color: #c9a227; margin-bottom: 1rem;">Statistik Belanja</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div>
-                            <p style="color: #b8a99a;">Total Transaksi</p>
-                            <p style="color: #c9a227; font-size: 1.5rem; font-weight: bold;">${customer.totalTransactions}x</p>
-                        </div>
-                        <div>
-                            <p style="color: #b8a99a;">Total Belanja</p>
-                            <p style="color: #c9a227; font-size: 1.5rem; font-weight: bold;">Rp ${customer.totalSpent.toLocaleString('id-ID')}</p>
+                    <div class="customer-details">
+                        <div class="customer-name">${c.name}</div>
+                        <div class="customer-meta">${c.phone}</div>
+                        <div class="customer-stats">
+                            <span><i class="fas fa-shopping-cart"></i> ${c.totalTransactions}x</span>
+                            <span><i class="fas fa-dollar-sign"></i> Rp ${c.totalSpent.toLocaleString('id-ID')}</span>
                         </div>
                     </div>
                 </div>
-                
-                <div class="customer-detail">
-                    <h4 style="color: #c9a227; margin-bottom: 1rem;">Riwayat Transaksi</h4>
-                    <div class="product-list">
-                        ${customerTransactions.map(t => `
-                            <div class="product-item" onclick="viewTransactionDetail('${t.id || t.orderNumber}')" style="cursor: pointer;">
-                                <div>
-                                    <div style="font-weight: 600;">${t.orderNumber || t.id}</div>
-                                    <div style="font-size: 0.8rem; color: #b8a99a;">${new Date(t.date).toLocaleDateString('id-ID')}</div>
-                                </div>
-                                <div style="color: #c9a227;">Rp ${t.total.toLocaleString('id-ID')}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('customerDetailModal').classList.add('show');
+            `).join('');
         }
 
-        // Close customer modal
-        function closeCustomerModal() {
-            document.getElementById('customerDetailModal').classList.remove('show');
-        }
-
-        // Update sales chart
+        // Update charts
         function updateSalesChart() {
             const period = document.getElementById('salesPeriod').value;
             const chart = document.getElementById('salesChart');
             
             const days = parseInt(period);
-            const labels = [];
             const data = [];
-            
-            // Group transactions by date
-            const salesByDate = {};
-            transactions.forEach(t => {
-                const date = new Date(t.date).toLocaleDateString('id-ID');
-                salesByDate[date] = (salesByDate[date] || 0) + t.total;
-            });
+            const labels = [];
             
             for (let i = days - 1; i >= 0; i--) {
                 const date = new Date();
                 date.setDate(date.getDate() - i);
                 const dateStr = date.toLocaleDateString('id-ID');
-                labels.push(date.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric' }));
-                data.push(salesByDate[dateStr] || 0);
+                
+                const dailyTotal = transactions
+                    .filter(t => new Date(t.date).toLocaleDateString('id-ID') === dateStr)
+                    .reduce((sum, t) => sum + t.total, 0);
+                
+                data.push(dailyTotal);
+                labels.push(date.toLocaleDateString('id-ID', { weekday: 'short' }));
             }
             
             const maxValue = Math.max(...data, 1);
             
-            chart.innerHTML = labels.map((label, index) => {
-                const height = (data[index] / maxValue) * 200;
-                return `
-                    <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-                        <div class="bar" style="height: ${height}px;" data-value="Rp ${data[index].toLocaleString('id-ID')}"></div>
-                        <span style="color: #b8a99a; margin-top: 0.5rem; font-size: 0.7rem;">${label}</span>
-                    </div>
-                `;
-            }).join('');
+            chart.innerHTML = data.map((value, i) => `
+                <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                    <div class="bar" style="height: ${(value / maxValue) * 120}px;"></div>
+                    <span class="bar-label">${labels[i]}</span>
+                </div>
+            `).join('');
         }
 
-        // Update payment method chart
         function updatePaymentChart() {
             const chart = document.getElementById('paymentChart');
             
-            // Group by payment method
             const payments = {};
             transactions.forEach(t => {
                 payments[t.paymentMethod] = (payments[t.paymentMethod] || 0) + 1;
@@ -2087,171 +1731,78 @@
             
             const maxValue = Math.max(...Object.values(payments), 1);
             
-            chart.innerHTML = Object.entries(payments).map(([method, count]) => {
-                const height = (count / maxValue) * 200;
-                return `
-                    <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-                        <div class="bar" style="height: ${height}px;" data-value="${count} transaksi"></div>
-                        <span style="color: #b8a99a; margin-top: 0.5rem; font-size: 0.7rem; text-align: center;">${method}</span>
-                    </div>
-                `;
-            }).join('');
+            chart.innerHTML = Object.entries(payments).map(([method, count]) => `
+                <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                    <div class="bar" style="height: ${(count / maxValue) * 120}px;"></div>
+                    <span class="bar-label">${method.substring(0, 3)}</span>
+                </div>
+            `).join('');
         }
 
-        // Preview images before upload
-        function previewImages(event) {
-            const files = event.target.files;
-            const preview = document.getElementById('imagePreview');
-            const placeholder = document.getElementById('imagePlaceholder');
-            const container = document.getElementById('imagePreviewContainer');
-            const gallery = document.getElementById('imageGallery');
-            const clearBtn = document.getElementById('clearImagesBtn');
+        // Filter functions
+        function filterStatus(status) {
+            currentFilter = status;
             
-            uploadedImages = [];
+            // Update active filter UI
+            document.querySelectorAll('.status-filter-item').forEach(el => {
+                el.classList.remove('active');
+            });
+            event.target.classList.add('active');
             
-            if (files.length > 0) {
-                container.classList.add('has-image');
-                clearBtn.style.display = 'inline-flex';
-                
-                // Show first image as preview
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.classList.add('show');
-                    placeholder.style.display = 'none';
-                }
-                reader.readAsDataURL(files[0]);
-                
-                // Show gallery if multiple images
-                if (files.length > 1) {
-                    gallery.style.display = 'grid';
-                    gallery.innerHTML = '';
-                    
-                    for (let i = 0; i < files.length; i++) {
-                        const file = files[i];
-                        const imgReader = new FileReader();
-                        
-                        imgReader.onload = function(e) {
-                            const imgData = e.target.result;
-                            uploadedImages.push(imgData);
-                            
-                            const galleryItem = document.createElement('div');
-                            galleryItem.className = 'image-gallery-item';
-                            galleryItem.innerHTML = `<img src="${imgData}" alt="Product ${i+1}" onclick="viewFullImage('${imgData}')">`;
-                            gallery.appendChild(galleryItem);
-                        }
-                        
-                        imgReader.readAsDataURL(file);
-                    }
-                } else {
-                    gallery.style.display = 'none';
-                    // Single image
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        uploadedImages = [e.target.result];
-                    }
-                    reader.readAsDataURL(files[0]);
-                }
+            displayTransactions();
+        }
+
+        function filterByCategory() {
+            displayProducts();
+        }
+
+        function searchProducts() {
+            displayProducts();
+        }
+
+        // Show all sections
+        function showAllProducts() {
+            showSection('products', document.querySelector('.nav-item[onclick*="products"]'));
+        }
+
+        function showAllTransactions() {
+            showSection('orders', document.querySelector('.nav-item[onclick*="orders"]'));
+        }
+
+        function showAllCustomers() {
+            showSection('customers', document.querySelector('.nav-item[onclick*="customers"]'));
+        }
+
+        // Navigation
+        function showSection(section, element) {
+            // Update active nav
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('active');
+            });
+            if (element) element.classList.add('active');
+            
+            // Scroll to appropriate section
+            let targetId;
+            switch(section) {
+                case 'home':
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    break;
+                case 'products':
+                    document.querySelector('.product-grid').scrollIntoView({ behavior: 'smooth' });
+                    break;
+                case 'orders':
+                    document.querySelector('.transaction-cards').scrollIntoView({ behavior: 'smooth' });
+                    break;
+                case 'customers':
+                    document.querySelector('.customer-cards').scrollIntoView({ behavior: 'smooth' });
+                    break;
+                case 'reports':
+                    document.querySelector('.chart-section').scrollIntoView({ behavior: 'smooth' });
+                    break;
             }
         }
 
-        // Clear uploaded images
-        function clearImages() {
-            document.getElementById('productImages').value = '';
-            document.getElementById('imagePreview').classList.remove('show');
-            document.getElementById('imagePlaceholder').style.display = 'block';
-            document.getElementById('imagePreviewContainer').classList.remove('has-image');
-            document.getElementById('imageGallery').style.display = 'none';
-            document.getElementById('clearImagesBtn').style.display = 'none';
-            uploadedImages = [];
-        }
-
-        // View full image
-        function viewFullImage(src) {
-            const modal = document.getElementById('imageFullscreenModal');
-            const fullImage = document.getElementById('fullscreenImage');
-            fullImage.src = src;
-            modal.classList.add('show');
-        }
-
-        // Close image modal
-        function closeImageModal() {
-            document.getElementById('imageFullscreenModal').classList.remove('show');
-        }
-
-        // Display products in table with images
-        function displayProducts() {
-            const tbody = document.getElementById('tableBody');
-            
-            if (products.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="7" style="text-align: center; padding: 3rem;">
-                            <i class="fas fa-box-open" style="font-size: 2rem; color: #5d3a1a;"></i>
-                            <p style="color: #b8a99a; margin-top: 1rem;">Tidak ada produk</p>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            tbody.innerHTML = products.map(product => {
-                const status = product.stock === 0 ? 'danger' : (product.stock <= 5 ? 'warning' : 'success');
-                const statusText = product.stock === 0 ? 'Habis' : (product.stock <= 5 ? 'Menipis' : 'Tersedia');
-                
-                // Get first image or use default
-                const productImage = product.images && product.images.length > 0 
-                    ? product.images[0] 
-                    : null;
-                
-                return `
-                    <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 0.8rem;">
-                                <div class="product-image-cell" onclick="${productImage ? `viewFullImage('${productImage}')` : ''}" style="cursor: ${productImage ? 'pointer' : 'default'};">
-                                    ${productImage ? 
-                                        `<img src="${productImage}" alt="${product.name}" title="Klik untuk perbesar">` : 
-                                        `<i class="fas fa-box"></i>`
-                                    }
-                                </div>
-                                <div>
-                                    <div style="font-weight: 600;">${product.name}</div>
-                                    <div style="font-size: 0.8rem; color: #b8a99a;">ID: ${product.id}</div>
-                                    ${product.images && product.images.length > 1 ? 
-                                        `<span style="font-size: 0.7rem; color: #c9a227;"><i class="fas fa-images"></i> ${product.images.length} foto</span>` : 
-                                        ''
-                                    }
-                                </div>
-                            </div>
-                        </td>
-                        <td><span style="color: #d9b382;">${product.category}</span></td>
-                        <td><span style="color: #c9a227; font-weight: 600;">Rp ${product.price.toLocaleString('id-ID')}</span></td>
-                        <td>${product.stock}</td>
-                        <td>${product.sold || 0}</td>
-                        <td>
-                            <span class="badge badge-${status}">
-                                ${statusText}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon" onclick="editProduct(${product.id})" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon" onclick="viewProduct(${product.id})" title="Detail">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-icon delete" onclick="openDeleteModal(${product.id})" title="Hapus">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // Product modal functions
+        // Product CRUD
         function openProductModal(product = null) {
             document.getElementById('productModal').classList.add('show');
             
@@ -2263,39 +1814,10 @@
                 document.getElementById('productPrice').value = product.price;
                 document.getElementById('productStock').value = product.stock;
                 document.getElementById('productDescription').value = product.description;
-                
-                // Load existing images if any
-                if (product.images && product.images.length > 0) {
-                    uploadedImages = product.images;
-                    
-                    const preview = document.getElementById('imagePreview');
-                    const placeholder = document.getElementById('imagePlaceholder');
-                    const container = document.getElementById('imagePreviewContainer');
-                    const gallery = document.getElementById('imageGallery');
-                    const clearBtn = document.getElementById('clearImagesBtn');
-                    
-                    preview.src = product.images[0];
-                    preview.classList.add('show');
-                    placeholder.style.display = 'none';
-                    container.classList.add('has-image');
-                    clearBtn.style.display = 'inline-flex';
-                    
-                    if (product.images.length > 1) {
-                        gallery.style.display = 'grid';
-                        gallery.innerHTML = '';
-                        
-                        product.images.forEach((img, index) => {
-                            const galleryItem = document.createElement('div');
-                            galleryItem.className = 'image-gallery-item';
-                            galleryItem.innerHTML = `<img src="${img}" alt="Product ${index+1}" onclick="viewFullImage('${img}')">`;
-                            gallery.appendChild(galleryItem);
-                        });
-                    }
-                }
             } else {
-                document.getElementById('modalTitle').textContent = 'Tambah Produk Baru';
-                document.getElementById('productId').value = '';
+                document.getElementById('modalTitle').textContent = 'Tambah Produk';
                 document.getElementById('productForm').reset();
+                document.getElementById('productId').value = '';
                 clearImages();
             }
         }
@@ -2304,7 +1826,6 @@
             document.getElementById('productModal').classList.remove('show');
             document.getElementById('productForm').reset();
             clearImages();
-            uploadedImages = [];
         }
 
         function saveProduct() {
@@ -2315,36 +1836,18 @@
             const stock = parseInt(document.getElementById('productStock').value);
             const description = document.getElementById('productDescription').value;
 
-            if (!name || !category || !price || !stock || !description) {
+            if (!name || !price || !stock) {
                 showNotification('Harap isi semua field!', 'error');
                 return;
             }
 
-            // Use uploaded images or keep existing ones
-            let images = uploadedImages.length > 0 ? uploadedImages : null;
-            
             if (id) {
-                // Edit product
+                // Edit
                 const index = products.findIndex(p => p.id == id);
-                
-                // If no new images uploaded, keep existing images
-                if (images === null) {
-                    images = products[index].images || [];
-                }
-                
-                products[index] = {
-                    ...products[index],
-                    name,
-                    category,
-                    price,
-                    stock,
-                    description,
-                    images: images,
-                    updatedAt: new Date().toISOString()
-                };
+                products[index] = { ...products[index], name, category, price, stock, description };
                 showNotification('Produk berhasil diupdate!', 'success');
             } else {
-                // Add new product
+                // Add
                 const newProduct = {
                     id: Date.now(),
                     name,
@@ -2352,16 +1855,14 @@
                     price,
                     stock,
                     description,
-                    images: images || [],
-                    sold: 0,
-                    createdAt: new Date().toISOString()
+                    images: uploadedImages,
+                    sold: 0
                 };
                 products.push(newProduct);
                 showNotification('Produk berhasil ditambahkan!', 'success');
             }
 
             localStorage.setItem('products', JSON.stringify(products));
-            clearImages();
             closeProductModal();
             updateStats();
             displayProducts();
@@ -2369,25 +1870,7 @@
 
         function editProduct(id) {
             const product = products.find(p => p.id === id);
-            if (product) {
-                openProductModal(product);
-            }
-        }
-
-        function viewProduct(id) {
-            const product = products.find(p => p.id === id);
-            if (product) {
-                let message = `📦 ${product.name}\nHarga: Rp ${product.price.toLocaleString('id-ID')}\nStok: ${product.stock}\n`;
-                
-                if (product.images && product.images.length > 0) {
-                    message += `\n📸 ${product.images.length} gambar tersedia`;
-                    
-                    // Show first image in modal
-                    viewFullImage(product.images[0]);
-                }
-                
-                showNotification(message, 'success');
-            }
+            if (product) openProductModal(product);
         }
 
         // Delete functions
@@ -2412,64 +1895,171 @@
             }
         }
 
-        // Show section
-        function showSection(section) {
-            showNotification(`Membuka halaman ${section}...`, 'success');
+        // Transaction functions
+        function viewTransactionDetail(id) {
+            const transaction = transactions.find(t => t.id === id || t.orderNumber === id);
+            if (!transaction) return;
             
-            // Scroll to appropriate section
-            const sections = {
-                'dashboard': document.querySelector('.header-section'),
-                'products': document.querySelector('#productsTable'),
-                'transactions': document.querySelector('#transactionsTable'),
-                'customers': document.querySelector('#customersTable'),
-                'reports': document.querySelector('.chart-section')
+            currentTransactionId = id;
+            
+            const statusColors = {
+                'pending': '#b9770e',
+                'processing': '#c9a227',
+                'completed': '#2d6a4f',
+                'cancelled': '#b22222'
             };
             
-            if (sections[section]) {
-                sections[section].scrollIntoView({ behavior: 'smooth' });
+            const modalBody = document.getElementById('transactionDetailBody');
+            modalBody.innerHTML = `
+                <div style="margin-bottom: 16px;">
+                    <h4 style="color: var(--primary); margin-bottom: 8px;">Informasi Pelanggan</h4>
+                    <p><strong>Nama:</strong> ${transaction.customer.name}</p>
+                    <p><strong>Email:</strong> ${transaction.customer.email}</p>
+                    <p><strong>No. HP:</strong> ${transaction.customer.phone}</p>
+                    <p><strong>Alamat:</strong> ${transaction.customer.address}</p>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <h4 style="color: var(--primary); margin-bottom: 8px;">Detail Produk</h4>
+                    ${transaction.items.map(item => `
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>${item.productName} x${item.quantity}</span>
+                            <span>Rp ${item.subtotal.toLocaleString('id-ID')}</span>
+                        </div>
+                    `).join('')}
+                    <div style="border-top: 1px solid var(--border); margin-top: 8px; padding-top: 8px; font-weight: bold; display: flex; justify-content: space-between;">
+                        <span>Total</span>
+                        <span style="color: var(--primary);">Rp ${transaction.total.toLocaleString('id-ID')}</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 style="color: var(--primary); margin-bottom: 8px;">Informasi Pembayaran</h4>
+                    <p><strong>Metode:</strong> ${transaction.paymentMethod}</p>
+                    <p><strong>Tanggal:</strong> ${new Date(transaction.date).toLocaleString('id-ID')}</p>
+                </div>
+            `;
+            
+            // Set status select
+            const statusSelect = document.getElementById('statusUpdate');
+            statusSelect.value = transaction.status || 'pending';
+            
+            document.getElementById('transactionDetailModal').classList.add('show');
+        }
+
+        function closeTransactionModal() {
+            document.getElementById('transactionDetailModal').classList.remove('show');
+        }
+
+        function updateTransactionStatus(id, status) {
+            const transaction = transactions.find(t => t.id === id || t.orderNumber === id);
+            if (transaction) {
+                transaction.status = status;
+                localStorage.setItem('transactions', JSON.stringify(transactions));
+                displayTransactions();
+                showNotification(`Status diupdate menjadi ${status}`, 'success');
             }
+        }
+
+        function updateMobileTransactionStatus() {
+            const status = document.getElementById('statusUpdate').value;
+            if (currentTransactionId) {
+                updateTransactionStatus(currentTransactionId, status);
+                closeTransactionModal();
+            }
+        }
+
+        // Customer functions
+        function viewCustomerDetail(email) {
+            const customer = customers.find(c => c.email === email);
+            if (!customer) return;
+            
+            alert(`👤 ${customer.name}\n📞 ${customer.phone}\n📧 ${customer.email}\n🛒 Total Belanja: ${customer.totalTransactions}x\n💰 Total: Rp ${customer.totalSpent.toLocaleString('id-ID')}`);
+        }
+
+        // Image functions
+        function previewImages(event) {
+            const files = event.target.files;
+            const preview = document.getElementById('imagePreview');
+            const placeholder = document.getElementById('imagePlaceholder');
+            const gallery = document.getElementById('imageGallery');
+            
+            uploadedImages = [];
+            
+            if (files.length > 0) {
+                preview.style.display = 'block';
+                placeholder.style.display = 'none';
+                
+                // Show first image as preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    uploadedImages.push(e.target.result);
+                }
+                reader.readAsDataURL(files[0]);
+                
+                // Show gallery for multiple images
+                if (files.length > 1) {
+                    gallery.innerHTML = '';
+                    for (let i = 1; i < files.length; i++) {
+                        const imgReader = new FileReader();
+                        imgReader.onload = function(e) {
+                            uploadedImages.push(e.target.result);
+                            gallery.innerHTML += `
+                                <div class="gallery-item">
+                                    <img src="${e.target.result}" alt="Product">
+                                </div>
+                            `;
+                        }
+                        imgReader.readAsDataURL(files[i]);
+                    }
+                }
+            }
+        }
+
+        function clearImages() {
+            document.getElementById('productImages').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('imagePlaceholder').style.display = 'block';
+            document.getElementById('imageGallery').innerHTML = '';
+            uploadedImages = [];
         }
 
         // Export data
         function exportData() {
             const exportData = {
-                products: products,
-                transactions: transactions,
-                customers: customers,
-                exportDate: new Date().toISOString(),
-                totalRevenue: transactions.reduce((sum, t) => sum + t.total, 0),
-                totalTransactions: transactions.length,
-                totalCustomers: customers.length
+                products,
+                transactions,
+                customers,
+                exportDate: new Date().toISOString()
             };
             
             const dataStr = JSON.stringify(exportData, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
             
-            const exportFileDefaultName = `dashboard_data_${new Date().toISOString().slice(0,10)}.json`;
+            const link = document.createElement('a');
+            link.setAttribute('href', dataUri);
+            link.setAttribute('download', `dashboard_${new Date().toISOString().slice(0,10)}.json`);
+            link.click();
             
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-            
-            showNotification('Data dashboard berhasil diekspor!', 'success');
+            showNotification('Data berhasil diekspor!', 'success');
         }
 
         // Refresh data
         function refreshData() {
             loadData();
-            showNotification('Data berhasil direfresh!', 'success');
+            showNotification('Data direfresh!', 'success');
         }
 
         // Show notification
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
-            const notificationMessage = document.getElementById('notificationMessage');
-            const notificationIcon = document.getElementById('notificationIcon');
+            const messageEl = document.getElementById('notificationMessage');
+            const icon = document.getElementById('notificationIcon');
             
-            notificationMessage.textContent = message;
+            messageEl.textContent = message;
             notification.className = `notification ${type}`;
-            notificationIcon.className = `fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}`;
+            icon.className = `fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}`;
             
             notification.classList.add('show');
             
@@ -2481,20 +2071,11 @@
         // Create animated background
         function createAnimatedBg() {
             const bg = document.getElementById('animatedBg');
-            
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 20; i++) {
                 const span = document.createElement('span');
-                const size = Math.random() * 50 + 20;
-                const posX = Math.random() * window.innerWidth;
-                const delay = Math.random() * 10;
-                const duration = Math.random() * 10 + 10;
-                
-                span.style.width = size + 'px';
-                span.style.height = size + 'px';
-                span.style.left = posX + 'px';
-                span.style.animationDelay = delay + 's';
-                span.style.animationDuration = duration + 's';
-                
+                span.style.left = Math.random() * 100 + '%';
+                span.style.animationDelay = Math.random() * 10 + 's';
+                span.style.animationDuration = Math.random() * 10 + 10 + 's';
                 bg.appendChild(span);
             }
         }
@@ -2504,9 +2085,8 @@
             createAnimatedBg();
         };
 
-        // Auto refresh data every 3 seconds
+        // Auto refresh
         setInterval(() => {
-            // Check for new transactions
             const savedTransactions = localStorage.getItem('transactions');
             if (savedTransactions) {
                 const newTransactions = JSON.parse(savedTransactions);
@@ -2522,7 +2102,6 @@
                 }
             }
             
-            // Check for product updates
             const savedProducts = localStorage.getItem('products');
             if (savedProducts) {
                 const newProducts = JSON.parse(savedProducts);
